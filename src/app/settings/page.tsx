@@ -13,7 +13,7 @@ import { saveFeeConfig } from "@/lib/firestore";
 export const dynamic = "force-dynamic";
 
 export default function SettingsPage() {
-  const { user, firebaseReady } = useAuth();
+  const { user, firebaseReady, demoMode } = useAuth();
   const [fixedFeePercent, setFixedFeePercent] = useState(8);
   const [saving, setSaving] = useState(false);
   const [message, setMessage] = useState<string | null>(null);
@@ -52,9 +52,9 @@ export default function SettingsPage() {
                 value={fixedFeePercent}
                 onChange={(event) => setFixedFeePercent(Number(event.target.value))}
               />
-              <Button onClick={save} loading={saving} disabled={!firebaseReady}>
+              <Button onClick={save} loading={saving}>
                 <Save className="h-4 w-4" />
-                Save fee config
+                {demoMode ? "Demo save" : "Save fee config"}
               </Button>
               {message ? <p className="text-sm font-semibold text-primary">{message}</p> : null}
             </CardContent>

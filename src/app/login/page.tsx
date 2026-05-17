@@ -64,12 +64,12 @@ export default function LoginPage() {
               <CardContent className="space-y-4 p-6">
                 {!firebaseReady ? (
                   <div className="rounded-2xl border border-amber-200 bg-amber-50 p-3 text-sm text-amber-900 dark:border-amber-900 dark:bg-amber-950/30 dark:text-amber-100">
-                    Chua co Firebase env. Dien `.env.local` theo `.env.example` de bat Google Login.
+                    Dang chay demo mode. Them Firebase env tren Vercel de bat Google Login va luu Firestore that.
                   </div>
                 ) : null}
-                <Button className="w-full" size="lg" onClick={loginWithGoogle} disabled={!firebaseReady}>
+                <Button className="w-full" size="lg" onClick={loginWithGoogle}>
                   <CircleUserRound className="h-5 w-5" />
-                  Login with Google
+                  {firebaseReady ? "Login with Google" : "Vao app demo"}
                 </Button>
                 <div className="grid gap-3 text-sm text-muted-foreground">
                   <p className="flex items-center gap-2">

@@ -29,7 +29,7 @@ export function saveCalculation(
   record: Omit<CalculationRecord, "id" | "createdAt">,
 ) {
   if (!db) {
-    return Promise.reject(new Error("Firebase is not configured."));
+    return Promise.resolve({ id: `demo-${Date.now()}` });
   }
   return addDoc(collection(db, "calculations"), {
     ...record,
@@ -64,7 +64,7 @@ export function subscribeCalculations(
 
 export function saveFeeConfig(config: Omit<FeeConfig, "id" | "createdAt">) {
   if (!db) {
-    return Promise.reject(new Error("Firebase is not configured."));
+    return Promise.resolve({ id: `demo-${Date.now()}` });
   }
   return addDoc(collection(db, "fee_configs"), {
     ...config,

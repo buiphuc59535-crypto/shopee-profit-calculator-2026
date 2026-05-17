@@ -18,21 +18,37 @@ import { auth, googleProvider, isFirebaseConfigured } from "@/lib/firebase";
 import { upsertUserProfile } from "@/lib/firestore";
 
 type AuthContextValue = {
-  user: User | null;
+  user: User | DemoUser | null;
   loading: boolean;
   loginWithGoogle: () => Promise<void>;
   logout: () => Promise<void>;
   firebaseReady: boolean;
+  demoMode: boolean;
 };
 
 const AuthContext = createContext<AuthContextValue | undefined>(undefined);
 
+type DemoUser = {
+  uid: string;
+  email: string;
+  displayName: string;
+  photoURL: string | null;
+};
+
+const demoUser: DemoUser = {
+  uid: "demo-user",
+  email: "demo@seller.local",
+  displayName: "Demo Seller",
+  photoURL: null,
+};
+
 export function AuthProvider({ children }: { children: React.ReactNode }) {
-  const [user, setUser] = useState<User | null>(null);
+  const [user, setUser] = useState<User | DemoUser | null>(null);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     if (!auth) {
+      setUser(demoUser);
       setLoading(false);
       return;
     }
@@ -55,12 +71,18 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   }, []);
 
   const loginWithGoogle = useCallback(async () => {
-    if (!auth) return;
+    if (!auth) {
+      setUser(demoUser);
+      return;
+    }
     await signInWithPopup(auth, googleProvider);
   }, []);
 
   const logout = useCallback(async () => {
-    if (!auth) return;
+    if (!auth) {
+      setUser(demoUser);
+      return;
+    }
     await signOut(auth);
   }, []);
 
@@ -71,6 +93,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       loginWithGoogle,
       logout,
       firebaseReady: isFirebaseConfigured,
+      demoMode: !isFirebaseConfigured,
     }),
     [loading, loginWithGoogle, logout, user],
   );
