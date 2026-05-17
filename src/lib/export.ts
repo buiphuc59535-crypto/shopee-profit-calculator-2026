@@ -17,6 +17,7 @@ export async function exportCalculationExcel(record: CalculationRecord) {
 
   const rows = [
     ["Sản phẩm", record.productName || "Chưa đặt tên"],
+    ["SKU", record.sku || "Chưa nhập"],
     ["1. Phí cố định", formatVnd(record.fixedFee)],
     ["2. Phí xử lý giao dịch 6%", formatVnd(record.transactionFee)],
     ["3. Voucher Xtra 5.5% (max 50k/1SP)", formatVnd(record.voucherXtraFee)],
@@ -79,6 +80,7 @@ export function exportCalculationPdf(record: CalculationRecord) {
   doc.setTextColor(31, 41, 55);
   doc.setFontSize(12);
   const rows = [
+    ["SKU", record.sku || "Chưa nhập"],
     ["1. Phí cố định", formatVnd(record.fixedFee)],
     ["2. Phí xử lý giao dịch", formatVnd(record.transactionFee)],
     ["3. Voucher Xtra", formatVnd(record.voucherXtraFee)],

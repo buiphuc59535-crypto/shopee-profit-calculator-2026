@@ -3,6 +3,7 @@
 import { AppShell } from "@/components/app/app-shell";
 import { AuthGate } from "@/components/app/auth-gate";
 import { CalculatorForm } from "@/components/calculator/calculator-form";
+import { SavedCalculations } from "@/components/calculator/saved-calculations";
 import { useAuth } from "@/contexts/auth-context";
 
 export const dynamic = "force-dynamic";
@@ -17,7 +18,12 @@ export default function CalculatorPage() {
           <p className="text-sm font-semibold text-primary">Tính phí</p>
           <h1 className="text-2xl font-black tracking-tight md:text-3xl">Tính lợi nhuận Sàn Cam 2026</h1>
         </div>
-        {user ? <CalculatorForm userId={user.uid} /> : null}
+        {user ? (
+          <div className="grid gap-5">
+            <CalculatorForm userId={user.uid} />
+            <SavedCalculations userId={user.uid} />
+          </div>
+        ) : null}
       </AppShell>
     </AuthGate>
   );

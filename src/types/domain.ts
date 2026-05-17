@@ -10,6 +10,7 @@ export type UserProfile = {
 
 export type CalculatorInput = {
   productName: string;
+  sku?: string;
   costPrice: number;
   targetProfit: number;
   fixedFeePercent: number;
@@ -55,6 +56,7 @@ export type FeeConfig = {
   fixedFeePercent: number;
   source: "manual" | "pdf";
   fileName?: string;
+  categoryName?: string;
   createdAt: Timestamp | Date;
 };
 

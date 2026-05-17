@@ -1,7 +1,7 @@
 ﻿"use client";
 
 import { useMemo, useState } from "react";
-import { Download, Search } from "lucide-react";
+import { Clock, Download, Search } from "lucide-react";
 import { AppShell } from "@/components/app/app-shell";
 import { AuthGate } from "@/components/app/auth-gate";
 import { Button } from "@/components/ui/button";
@@ -11,7 +11,7 @@ import { Skeleton } from "@/components/ui/skeleton";
 import { useAuth } from "@/contexts/auth-context";
 import { useCalculations } from "@/hooks/use-calculations";
 import { exportCalculationExcel, exportCalculationPdf } from "@/lib/export";
-import { formatPercent, formatVnd } from "@/lib/utils";
+import { formatDateTime, formatPercent, formatVnd } from "@/lib/utils";
 
 export const dynamic = "force-dynamic";
 
@@ -22,7 +22,11 @@ export default function HistoryPage() {
   const filtered = useMemo(() => {
     const query = keyword.trim().toLowerCase();
     if (!query) return records;
-    return records.filter((item) => item.productName.toLowerCase().includes(query));
+    return records.filter((item) => {
+      const productName = item.productName?.toLowerCase() ?? "";
+      const sku = item.sku?.toLowerCase() ?? "";
+      return productName.includes(query) || sku.includes(query);
+    });
   }, [keyword, records]);
 
   return (
@@ -43,7 +47,7 @@ export default function HistoryPage() {
               <Input
                 aria-label="Tìm sản phẩm"
                 className="pl-10"
-                placeholder="Tìm theo tên sản phẩm..."
+                placeholder="Tìm theo tên sản phẩm hoặc SKU..."
                 value={keyword}
                 onChange={(event) => setKeyword(event.target.value)}
               />
@@ -59,11 +63,23 @@ export default function HistoryPage() {
               <Skeleton className="h-24" />
             </>
           ) : filtered.length ? (
-            filtered.map((item) => (
+            filtered.map((item, index) => (
               <Card key={item.id}>
                 <CardContent className="grid gap-4 p-4 md:grid-cols-[1fr_auto] md:items-center">
                   <div>
-                    <p className="text-lg font-black">{item.productName}</p>
+                    <div className="flex flex-wrap items-center gap-3">
+                      <span className="rounded-full bg-muted px-3 py-1 text-sm font-black text-primary">
+                        STT {index + 1}
+                      </span>
+                      <p className="text-lg font-black">{item.productName}</p>
+                    </div>
+                    <div className="mt-2 flex flex-wrap gap-3 text-sm text-muted-foreground">
+                      <span>SKU: <strong className="text-foreground">{item.sku?.trim() || "Chưa nhập"}</strong></span>
+                      <span className="inline-flex items-center gap-1">
+                        <Clock className="h-4 w-4" />
+                        {formatDateTime(item.createdAt)}
+                      </span>
+                    </div>
                     <div className="mt-2 grid gap-2 text-sm text-muted-foreground sm:grid-cols-4">
                       <span>Giá bán: <strong className="text-foreground">{formatVnd(item.sellPrice)}</strong></span>
                       <span>Lãi: <strong className="text-foreground">{formatVnd(item.realProfit)}</strong></span>

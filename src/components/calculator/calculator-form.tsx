@@ -13,12 +13,16 @@ import { ResultPanel } from "@/components/calculator/result-panel";
 import { ADS_OPTIONS, calculateProfit } from "@/lib/calculator";
 import { exportCalculationExcel, exportCalculationPdf } from "@/lib/export";
 import { saveCalculation, saveFeeConfig } from "@/lib/firestore";
-import { extractFixedFeeFromPdf } from "@/lib/pdf-fee-parser";
+import {
+  extractFeeConfigsFromPdfs,
+  type ParsedFeeCategory,
+} from "@/lib/pdf-fee-parser";
 import { formatVnd } from "@/lib/utils";
 import type { CalculationRecord } from "@/types/domain";
 
 const schema = z.object({
   productName: z.string().min(1, "Nhập tên sản phẩm"),
+  sku: z.string().optional().default(""),
   costPrice: z.coerce.number().min(0),
   targetProfit: z.coerce.number().min(0),
   fixedFeePercent: z.coerce.number().min(0).max(80),
@@ -33,6 +37,7 @@ type FormValues = z.output<typeof schema>;
 
 const defaults: FormValues = {
   productName: "Sản phẩm demo",
+  sku: "",
   costPrice: 120000,
   targetProfit: 45000,
   fixedFeePercent: 8,
@@ -46,6 +51,7 @@ export function CalculatorForm({ userId }: { userId: string }) {
   const [saving, setSaving] = useState(false);
   const [pdfLoading, setPdfLoading] = useState(false);
   const [message, setMessage] = useState<string | null>(null);
+  const [parsedCategories, setParsedCategories] = useState<ParsedFeeCategory[]>([]);
   const form = useForm<FormInput, unknown, FormValues>({
     resolver: zodResolver(schema),
     defaultValues: defaults,
@@ -60,6 +66,7 @@ export function CalculatorForm({ userId }: { userId: string }) {
           ...defaults,
           productName:
             typeof watchedValues.productName === "string" ? watchedValues.productName : "",
+          sku: typeof watchedValues.sku === "string" ? watchedValues.sku : "",
         };
   }, [watchedValues]);
   const result = useMemo(() => calculateProfit(values), [values]);
@@ -83,22 +90,51 @@ export function CalculatorForm({ userId }: { userId: string }) {
     }
   }
 
-  async function handlePdf(file?: File) {
-    if (!file) return;
+  async function handlePdf(files?: FileList | null) {
+    const pdfFiles = Array.from(files ?? []).filter((file) => file.type === "application/pdf");
+    if (!pdfFiles.length) return;
     setPdfLoading(true);
     setMessage(null);
     try {
-      const fee = await extractFixedFeeFromPdf(file);
-      if (fee === null) {
-        setMessage("Không tìm thấy phí cố định trong PDF. Hãy nhập thủ công.");
+      const parsed = await extractFeeConfigsFromPdfs(pdfFiles);
+      setParsedCategories(parsed.categories);
+      const firstCategory = parsed.categories[0];
+      if (!firstCategory) {
+        setMessage("Không tìm thấy bảng phí cố định trong PDF. Hãy nhập thủ công.");
         return;
       }
-      form.setValue("fixedFeePercent", fee, { shouldValidate: true });
-      await saveFeeConfig({ userId, fixedFeePercent: fee, source: "pdf", fileName: file.name });
-      setMessage(`Đã đọc phí cố định ${fee}% từ PDF và lưu cấu hình.`);
+      applyPdfCategory(firstCategory);
+      await saveFeeConfig({
+        userId,
+        fixedFeePercent: firstCategory.feePercent,
+        source: "pdf",
+        fileName: firstCategory.sourceFile,
+        categoryName: firstCategory.categoryPath,
+      });
+      setMessage(
+        `Đã đọc ${parsed.categories.length} ngành hàng từ ${pdfFiles.length} file PDF. Đang áp dụng dòng đầu tiên, bạn có thể chọn lại ngành hàng bên dưới.`,
+      );
     } finally {
       setPdfLoading(false);
     }
+  }
+
+  function applyPdfCategory(category: ParsedFeeCategory) {
+    form.setValue("fixedFeePercent", category.feePercent, { shouldValidate: true });
+  }
+
+  async function handlePdfCategoryChange(categoryId: string) {
+    const category = parsedCategories.find((item) => item.id === categoryId);
+    if (!category) return;
+    applyPdfCategory(category);
+    await saveFeeConfig({
+      userId,
+      fixedFeePercent: category.feePercent,
+      source: "pdf",
+      fileName: category.sourceFile,
+      categoryName: category.categoryPath,
+    });
+    setMessage(`Đã áp dụng phí cố định ${category.feePercent}% cho ngành: ${category.categoryPath}.`);
   }
 
   return (
@@ -114,6 +150,9 @@ export function CalculatorForm({ userId }: { userId: string }) {
           <form className="grid gap-4 md:grid-cols-2" onSubmit={(event) => event.preventDefault()}>
             <div className="md:col-span-2">
               <Input label="Tên sản phẩm" placeholder="Áo thun local brand" {...form.register("productName")} />
+            </div>
+            <div className="md:col-span-2">
+              <Input label="SKU / Mã sản phẩm" placeholder="VD: AO-THUN-001" {...form.register("sku")} />
             </div>
             <Input label="13. Giá vốn" type="number" inputMode="numeric" {...form.register("costPrice")} />
             <Input label="14. Lãi mong muốn" type="number" inputMode="numeric" {...form.register("targetProfit")} />
@@ -136,12 +175,29 @@ export function CalculatorForm({ userId }: { userId: string }) {
                 <input
                   type="file"
                   accept="application/pdf"
+                  multiple
                   className="w-full text-sm"
                   disabled={pdfLoading}
-                  onChange={(event) => handlePdf(event.target.files?.[0])}
+                  onChange={(event) => handlePdf(event.target.files)}
                 />
               </span>
             </label>
+
+            {parsedCategories.length ? (
+              <div className="md:col-span-2">
+                <Select
+                  label="Chọn ngành hàng đọc từ PDF"
+                  onChange={(event) => handlePdfCategoryChange(event.target.value)}
+                  defaultValue={parsedCategories[0]?.id}
+                >
+                  {parsedCategories.map((category) => (
+                    <option key={category.id} value={category.id}>
+                      {category.sourceFile} - {category.categoryPath} - {category.feePercent}%
+                    </option>
+                  ))}
+                </Select>
+              </div>
+            ) : null}
 
             <div className="md:col-span-2">
               <div className="rounded-2xl bg-muted p-4 text-sm text-muted-foreground">
