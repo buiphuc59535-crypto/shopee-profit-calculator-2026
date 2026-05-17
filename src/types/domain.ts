@@ -22,6 +22,7 @@ export type CalculatorInput = {
 export type CalculationResult = {
   sellPrice: number;
   fixedFee: number;
+  fixedFeePercentAmount: number;
   transactionFee: number;
   voucherXtraFee: number;
   taxFee: number;
@@ -29,7 +30,10 @@ export type CalculationResult = {
   infraFee: number;
   piShip: number;
   totalFee: number;
+  totalVariableCost: number;
   adsFee: number;
+  returnFee: number;
+  operationFee: number;
   realProfit: number;
   netMargin: number;
   breakEven: number;

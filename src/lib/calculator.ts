@@ -22,26 +22,27 @@ export function calculateProfit(input: CalculatorInput): CalculationResult {
   const returnRate = toRate(input.returnPercent);
   const operationRate = toRate(input.operationPercent);
 
-  const variableRate =
+  const baseVariableRate =
     fixedFeeRate +
     SHOPEE_FEES.transactionRate +
-    SHOPEE_FEES.voucherXtraRate +
     SHOPEE_FEES.householdTaxRate +
     SHOPEE_FEES.qcRate +
     adsRate +
     returnRate +
     operationRate;
 
-  const denominator = 1 - variableRate;
+  const fixedCosts =
+    costPrice + targetProfit + voucher + SHOPEE_FEES.infraFee + SHOPEE_FEES.piShip;
+  const uncappedDenominator = 1 - baseVariableRate - SHOPEE_FEES.voucherXtraRate;
+  const uncappedSellPrice =
+    uncappedDenominator > 0 ? fixedCosts / uncappedDenominator : 0;
+  const voucherXtraIsCapped =
+    uncappedSellPrice * SHOPEE_FEES.voucherXtraRate > SHOPEE_FEES.voucherXtraMax;
+  const cappedDenominator = 1 - baseVariableRate;
   const sellPrice =
-    denominator > 0
-      ? (costPrice +
-          targetProfit +
-          voucher +
-          SHOPEE_FEES.infraFee +
-          SHOPEE_FEES.piShip) /
-        denominator
-      : 0;
+    voucherXtraIsCapped && cappedDenominator > 0
+      ? (fixedCosts + SHOPEE_FEES.voucherXtraMax) / cappedDenominator
+      : uncappedSellPrice;
 
   const fixedFee = sellPrice * fixedFeeRate;
   const transactionFee = sellPrice * SHOPEE_FEES.transactionRate;
@@ -55,20 +56,7 @@ export function calculateProfit(input: CalculatorInput): CalculationResult {
   const adsFee = sellPrice * adsRate;
   const returnFee = sellPrice * returnRate;
   const operationFee = sellPrice * operationRate;
-  const realProfit =
-    sellPrice -
-    totalFee -
-    adsFee -
-    voucher -
-    costPrice -
-    SHOPEE_FEES.infraFee -
-    SHOPEE_FEES.piShip -
-    returnFee -
-    operationFee;
-
-  const netMargin = sellPrice > 0 ? (realProfit / sellPrice) * 100 : 0;
-  const breakEven =
-    costPrice +
+  const totalVariableCost =
     totalFee +
     adsFee +
     voucher +
@@ -76,12 +64,20 @@ export function calculateProfit(input: CalculatorInput): CalculationResult {
     SHOPEE_FEES.piShip +
     returnFee +
     operationFee;
+  const realProfit =
+    sellPrice -
+    costPrice -
+    totalVariableCost;
+
+  const netMargin = sellPrice > 0 ? (realProfit / sellPrice) * 100 : 0;
+  const breakEven = costPrice + totalVariableCost;
   const roas = adsFee > 0 ? sellPrice / adsFee : 0;
   const safeCpc = Math.max(realProfit * 0.12, 0);
 
   return roundResult({
     sellPrice,
     fixedFee,
+    fixedFeePercentAmount: fixedFee,
     transactionFee,
     voucherXtraFee,
     taxFee,
@@ -89,7 +85,10 @@ export function calculateProfit(input: CalculatorInput): CalculationResult {
     infraFee: SHOPEE_FEES.infraFee,
     piShip: SHOPEE_FEES.piShip,
     totalFee,
+    totalVariableCost,
     adsFee,
+    returnFee,
+    operationFee,
     realProfit,
     netMargin,
     breakEven,

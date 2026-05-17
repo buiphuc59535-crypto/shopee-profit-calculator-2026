@@ -11,13 +11,22 @@ import type { CalculationResult } from "@/types/domain";
 export function ResultPanel({ result }: { result: CalculationResult }) {
   const signals = getProfitSignals(result);
   const items = [
-    ["Gia ban de xuat", formatVnd(result.sellPrice)],
-    ["Tong phi Shopee", formatVnd(result.totalFee)],
-    ["Phi ads", formatVnd(result.adsFee)],
-    ["Lai thuc te", formatVnd(result.realProfit)],
-    ["Bien lai rong", formatPercent(result.netMargin)],
+    ["1. Phi co dinh", formatVnd(result.fixedFee)],
+    ["2. Phi xu ly giao dich 6%", formatVnd(result.transactionFee)],
+    ["3. DV Voucher Xtra 5.5% max 50k", formatVnd(result.voucherXtraFee)],
+    ["4. Thue HKD tam tinh 1.5%", formatVnd(result.taxFee)],
+    ["5. Phi QC co dinh 1%", formatVnd(result.qcFee)],
+    ["6. Phi ha tang", formatVnd(result.infraFee)],
+    ["7. Phi PI Ship", formatVnd(result.piShip)],
+    ["8. Tong phi Shopee", `${formatVnd(result.totalFee)} (${formatPercent(result.effectiveFeeRate)})`],
+    ["9. Phi quang cao uoc tinh", formatVnd(result.adsFee)],
+    ["11. Phi hoan hang uoc tinh", formatVnd(result.returnFee)],
+    ["12. Phi van hanh uoc tinh", formatVnd(result.operationFee)],
+    ["15. Gia ban san pham", formatVnd(result.sellPrice)],
+    ["16. Lai thuc te", formatVnd(result.realProfit)],
+    ["17. Lai rong", formatPercent(result.netMargin)],
     ["Diem hoa von", formatVnd(result.breakEven)],
-    ["ROAS", result.roas > 0 ? result.roas.toFixed(2) : "Khong ads"],
+    ["ROAS Ads", result.roas > 0 ? `${result.roas.toFixed(2)}x` : "Khong ads"],
   ];
 
   return (
@@ -41,7 +50,7 @@ export function ResultPanel({ result }: { result: CalculationResult }) {
         </CardHeader>
         <CardContent className="space-y-4 pt-5">
           <div className="grid gap-3">
-            {items.slice(1).map(([label, value]) => (
+            {items.map(([label, value]) => (
               <div key={label} className="flex items-center justify-between gap-4 rounded-xl bg-muted p-3">
                 <span className="text-sm text-muted-foreground">{label}</span>
                 <span className="text-right font-bold">{value}</span>

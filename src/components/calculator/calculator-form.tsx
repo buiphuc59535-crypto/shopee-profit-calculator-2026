@@ -32,7 +32,7 @@ type FormInput = z.input<typeof schema>;
 type FormValues = z.output<typeof schema>;
 
 const defaults: FormValues = {
-  productName: "",
+  productName: "San pham demo",
   costPrice: 120000,
   targetProfit: 45000,
   fixedFeePercent: 8,
@@ -107,30 +107,30 @@ export function CalculatorForm({ userId }: { userId: string }) {
         <CardHeader>
           <CardTitle>Tinh gia ban tu dong</CardTitle>
           <CardDescription>
-            Nhap gia von, lai mong muon va ty le phi. Voucher/hoan hang/van hanh de trong se tinh la 0.
+            User chi can nhap cac muc 1, 9, 10, 11, 12, 13, 14. Cac muc con lai app tu tinh theo rule Shopee 2026.
           </CardDescription>
         </CardHeader>
         <CardContent>
           <form className="grid gap-4 md:grid-cols-2" onSubmit={(event) => event.preventDefault()}>
             <div className="md:col-span-2">
-              <Input label="Product name" placeholder="Ao thun local brand" {...form.register("productName")} />
+              <Input label="Ten san pham" placeholder="Ao thun local brand" {...form.register("productName")} />
             </div>
-            <Input label="Cost price" type="number" inputMode="numeric" {...form.register("costPrice")} />
-            <Input label="Target profit" type="number" inputMode="numeric" {...form.register("targetProfit")} />
-            <Input label="Fixed fee %" type="number" inputMode="decimal" step="0.1" {...form.register("fixedFeePercent")} />
-            <Select label="Ads %" {...form.register("adsPercent")}>
+            <Input label="13. Gia von" type="number" inputMode="numeric" {...form.register("costPrice")} />
+            <Input label="14. Lai mong muon" type="number" inputMode="numeric" {...form.register("targetProfit")} />
+            <Input label="1. Phi co dinh %" type="number" inputMode="decimal" step="0.1" {...form.register("fixedFeePercent")} />
+            <Select label="9. Phi ads %" {...form.register("adsPercent")}>
               {ADS_OPTIONS.map((option) => (
                 <option key={option} value={option}>
                   {option}%
                 </option>
               ))}
             </Select>
-            <Input label="Voucher shop" type="number" inputMode="numeric" {...form.register("voucher")} />
-            <Input label="Return %" type="number" inputMode="decimal" step="0.1" {...form.register("returnPercent")} />
-            <Input label="Operation %" type="number" inputMode="decimal" step="0.1" {...form.register("operationPercent")} />
+            <Input label="10. Voucher shop" type="number" inputMode="numeric" {...form.register("voucher")} />
+            <Input label="11. Hoan hang %" type="number" inputMode="decimal" step="0.1" {...form.register("returnPercent")} />
+            <Input label="12. Van hanh %" type="number" inputMode="decimal" step="0.1" {...form.register("operationPercent")} />
 
             <label className="grid gap-2 text-sm font-medium text-foreground">
-              Upload PDF phi Shopee
+              Upload PDF phi co dinh Shopee
               <span className="flex h-12 items-center gap-3 rounded-xl border bg-card px-3">
                 <FileSearch className="h-4 w-4 text-primary" />
                 <input
@@ -145,7 +145,7 @@ export function CalculatorForm({ userId }: { userId: string }) {
 
             <div className="md:col-span-2">
               <div className="rounded-2xl bg-muted p-4 text-sm text-muted-foreground">
-                Gia ban hien tai: <strong className="text-foreground">{formatVnd(result.sellPrice)}</strong>. Phi Voucher Xtra tu dong cap max 50.000d theo rule.
+                15. Gia ban san pham: <strong className="text-foreground">{formatVnd(result.sellPrice)}</strong>. Muc 3 duoc tinh dung rule MIN(gia ban x 5.5%, 50.000d).
               </div>
             </div>
 
