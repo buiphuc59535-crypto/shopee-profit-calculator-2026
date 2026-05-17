@@ -14,6 +14,7 @@ import { db } from "@/lib/firebase";
 import type { CalculationRecord, FeeConfig, UserProfile } from "@/types/domain";
 
 export function upsertUserProfile(profile: Omit<UserProfile, "createdAt">) {
+  if (!db) return Promise.resolve();
   return setDoc(
     doc(db, "users", profile.uid),
     {
@@ -27,6 +28,9 @@ export function upsertUserProfile(profile: Omit<UserProfile, "createdAt">) {
 export function saveCalculation(
   record: Omit<CalculationRecord, "id" | "createdAt">,
 ) {
+  if (!db) {
+    return Promise.reject(new Error("Firebase is not configured."));
+  }
   return addDoc(collection(db, "calculations"), {
     ...record,
     createdAt: serverTimestamp(),
@@ -37,6 +41,10 @@ export function subscribeCalculations(
   userId: string,
   callback: (records: CalculationRecord[]) => void,
 ) {
+  if (!db) {
+    callback([]);
+    return () => undefined;
+  }
   const ref = query(
     collection(db, "calculations"),
     where("userId", "==", userId),
@@ -55,6 +63,9 @@ export function subscribeCalculations(
 }
 
 export function saveFeeConfig(config: Omit<FeeConfig, "id" | "createdAt">) {
+  if (!db) {
+    return Promise.reject(new Error("Firebase is not configured."));
+  }
   return addDoc(collection(db, "fee_configs"), {
     ...config,
     createdAt: serverTimestamp(),
