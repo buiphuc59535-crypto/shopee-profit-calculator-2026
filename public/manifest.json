@@ -1,11 +1,11 @@
-{
-  "name": "Shopee Profit Calculator 2026",
-  "short_name": "Shopee Profit",
-  "description": "Tinh gia ban va loi nhuan Shopee cho seller Viet Nam.",
+﻿{
+  "name": "Sàn Cam Calculator 2026",
+  "short_name": "Sàn Cam",
+  "description": "Tính giá bán và lợi nhuận Sàn Cam cho seller Việt Nam.",
   "start_url": "/dashboard",
   "display": "standalone",
-  "background_color": "#fff8f5",
-  "theme_color": "#ee4d2d",
+  "background_color": "#f0f9ff",
+  "theme_color": "#0284c7",
   "orientation": "portrait-primary",
   "icons": [
     {
@@ -22,3 +22,4 @@
     }
   ]
 }
+

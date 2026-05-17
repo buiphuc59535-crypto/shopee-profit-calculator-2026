@@ -1,4 +1,4 @@
-import { cn } from "@/lib/utils";
+﻿import { cn } from "@/lib/utils";
 
 export function Skeleton({ className }: { className?: string }) {
   return (
@@ -7,3 +7,4 @@ export function Skeleton({ className }: { className?: string }) {
     </div>
   );
 }
+

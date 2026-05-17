@@ -1,7 +1,7 @@
-import type { CalculatorInput, CalculationResult } from "@/types/domain";
+﻿import type { CalculatorInput, CalculationResult } from "@/types/domain";
 import { toRate } from "@/lib/utils";
 
-export const SHOPEE_FEES = {
+export const SAN_CAM_FEES = {
   transactionRate: 0.06,
   voucherXtraRate: 0.055,
   voucherXtraMax: 50000,
@@ -24,34 +24,34 @@ export function calculateProfit(input: CalculatorInput): CalculationResult {
 
   const baseVariableRate =
     fixedFeeRate +
-    SHOPEE_FEES.transactionRate +
-    SHOPEE_FEES.householdTaxRate +
-    SHOPEE_FEES.qcRate +
+    SAN_CAM_FEES.transactionRate +
+    SAN_CAM_FEES.householdTaxRate +
+    SAN_CAM_FEES.qcRate +
     adsRate +
     returnRate +
     operationRate;
 
   const fixedCosts =
-    costPrice + targetProfit + voucher + SHOPEE_FEES.infraFee + SHOPEE_FEES.piShip;
-  const uncappedDenominator = 1 - baseVariableRate - SHOPEE_FEES.voucherXtraRate;
+    costPrice + targetProfit + voucher + SAN_CAM_FEES.infraFee + SAN_CAM_FEES.piShip;
+  const uncappedDenominator = 1 - baseVariableRate - SAN_CAM_FEES.voucherXtraRate;
   const uncappedSellPrice =
     uncappedDenominator > 0 ? fixedCosts / uncappedDenominator : 0;
   const voucherXtraIsCapped =
-    uncappedSellPrice * SHOPEE_FEES.voucherXtraRate > SHOPEE_FEES.voucherXtraMax;
+    uncappedSellPrice * SAN_CAM_FEES.voucherXtraRate > SAN_CAM_FEES.voucherXtraMax;
   const cappedDenominator = 1 - baseVariableRate;
   const sellPrice =
     voucherXtraIsCapped && cappedDenominator > 0
-      ? (fixedCosts + SHOPEE_FEES.voucherXtraMax) / cappedDenominator
+      ? (fixedCosts + SAN_CAM_FEES.voucherXtraMax) / cappedDenominator
       : uncappedSellPrice;
 
   const fixedFee = sellPrice * fixedFeeRate;
-  const transactionFee = sellPrice * SHOPEE_FEES.transactionRate;
+  const transactionFee = sellPrice * SAN_CAM_FEES.transactionRate;
   const voucherXtraFee = Math.min(
-    sellPrice * SHOPEE_FEES.voucherXtraRate,
-    SHOPEE_FEES.voucherXtraMax,
+    sellPrice * SAN_CAM_FEES.voucherXtraRate,
+    SAN_CAM_FEES.voucherXtraMax,
   );
-  const taxFee = sellPrice * SHOPEE_FEES.householdTaxRate;
-  const qcFee = sellPrice * SHOPEE_FEES.qcRate;
+  const taxFee = sellPrice * SAN_CAM_FEES.householdTaxRate;
+  const qcFee = sellPrice * SAN_CAM_FEES.qcRate;
   const totalFee = fixedFee + transactionFee + voucherXtraFee + taxFee + qcFee;
   const adsFee = sellPrice * adsRate;
   const returnFee = sellPrice * returnRate;
@@ -60,8 +60,8 @@ export function calculateProfit(input: CalculatorInput): CalculationResult {
     totalFee +
     adsFee +
     voucher +
-    SHOPEE_FEES.infraFee +
-    SHOPEE_FEES.piShip +
+    SAN_CAM_FEES.infraFee +
+    SAN_CAM_FEES.piShip +
     returnFee +
     operationFee;
   const realProfit =
@@ -82,8 +82,8 @@ export function calculateProfit(input: CalculatorInput): CalculationResult {
     voucherXtraFee,
     taxFee,
     qcFee,
-    infraFee: SHOPEE_FEES.infraFee,
-    piShip: SHOPEE_FEES.piShip,
+    infraFee: SAN_CAM_FEES.infraFee,
+    piShip: SAN_CAM_FEES.piShip,
     totalFee,
     totalVariableCost,
     adsFee,
@@ -100,9 +100,9 @@ export function calculateProfit(input: CalculatorInput): CalculationResult {
 
 export function getProfitSignals(result: CalculationResult) {
   const warnings: string[] = [];
-  if (result.netMargin < 8) warnings.push("Bien loi nhuan thap, nen tang gia hoac giam ads.");
-  if (result.roas > 0 && result.roas < 4) warnings.push("ROAS dang mong, can toi uu CPC/tu khoa.");
-  if (result.realProfit <= 0) warnings.push("Gia nay co nguy co lo sau phi va chi phi van hanh.");
+  if (result.netMargin < 8) warnings.push("Biên lợi nhuận thấp, nên tăng giá hoặc giảm ads.");
+  if (result.roas > 0 && result.roas < 4) warnings.push("ROAS đang mỏng, cần tối ưu CPC/từ khóa.");
+  if (result.realProfit <= 0) warnings.push("Giá này có nguy cơ lỗ sau phí và chi phí vận hành.");
 
   return {
     health:
@@ -122,3 +122,5 @@ function roundResult(result: CalculationResult): CalculationResult {
     Object.entries(result).map(([key, value]) => [key, Math.round(value * 100) / 100]),
   ) as CalculationResult;
 }
+
+

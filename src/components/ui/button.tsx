@@ -1,4 +1,4 @@
-import * as React from "react";
+﻿import * as React from "react";
 import { Slot } from "@radix-ui/react-slot";
 import { cva, type VariantProps } from "class-variance-authority";
 import { Loader2 } from "lucide-react";
@@ -10,9 +10,9 @@ const buttonVariants = cva(
     variants: {
       variant: {
         default:
-          "bg-primary text-primary-foreground shadow-sm shadow-orange-200 hover:bg-[#d84224] dark:shadow-none",
+          "bg-primary text-primary-foreground shadow-sm shadow-sky-200 hover:bg-sky-700 dark:shadow-none",
         secondary:
-          "bg-muted text-foreground hover:bg-orange-100 dark:hover:bg-[#2b303b]",
+          "bg-muted text-foreground hover:bg-sky-100 dark:hover:bg-[#13263b]",
         outline:
           "border bg-card text-foreground hover:bg-muted",
         ghost:
@@ -73,3 +73,4 @@ export function Button({
     </Comp>
   );
 }
+

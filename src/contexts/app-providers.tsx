@@ -1,4 +1,4 @@
-"use client";
+﻿"use client";
 
 import { ThemeProvider } from "next-themes";
 import { AuthProvider } from "@/contexts/auth-context";
@@ -10,3 +10,4 @@ export function AppProviders({ children }: { children: React.ReactNode }) {
     </ThemeProvider>
   );
 }
+

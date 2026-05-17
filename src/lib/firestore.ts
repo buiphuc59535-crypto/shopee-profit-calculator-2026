@@ -1,4 +1,4 @@
-import {
+﻿import {
   addDoc,
   collection,
   doc,
@@ -13,8 +13,8 @@ import {
 import { db } from "@/lib/firebase";
 import type { CalculationRecord, FeeConfig, UserProfile } from "@/types/domain";
 
-const DEMO_CALCULATIONS_KEY = "shopee-profit-demo-calculations";
-const DEMO_FEE_CONFIGS_KEY = "shopee-profit-demo-fee-configs";
+const DEMO_CALCULATIONS_KEY = "san-cam-profit-demo-calculations";
+const DEMO_FEE_CONFIGS_KEY = "san-cam-profit-demo-fee-configs";
 const DEMO_CALCULATIONS_EVENT = "demo-calculations-updated";
 
 export function upsertUserProfile(profile: Omit<UserProfile, "createdAt">) {
@@ -111,3 +111,4 @@ function readDemoCalculations(): CalculationRecord[] {
     return [];
   }
 }
+

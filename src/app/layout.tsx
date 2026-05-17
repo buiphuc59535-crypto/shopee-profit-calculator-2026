@@ -1,4 +1,4 @@
-import type { Metadata } from "next";
+﻿import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import { AppProviders } from "@/contexts/app-providers";
 import { ServiceWorkerReset } from "@/components/app/service-worker-reset";
@@ -16,16 +16,16 @@ const geistMono = Geist_Mono({
 
 export const metadata: Metadata = {
   title: {
-    default: "Shopee Profit Calculator 2026",
-    template: "%s | Shopee Profit Calculator 2026",
+    default: "Sàn Cam Calculator 2026",
+    template: "%s | Sàn Cam Calculator 2026",
   },
   description:
-    "PWA tinh loi nhuan ban hang Shopee 2026 cho seller TMĐT Viet Nam.",
-  applicationName: "Shopee Profit Calculator 2026",
+    "PWA tính lợi nhuận bán hàng Sàn Cam 2026 cho seller TMĐT Việt Nam.",
+  applicationName: "Sàn Cam Calculator 2026",
   manifest: "/manifest.json",
   keywords: [
-    "Shopee",
-    "tinh loi nhuan",
+    "Sàn Cam",
+    "tính lợi nhuận",
     "seller",
     "PWA",
     "Firebase",
@@ -34,7 +34,7 @@ export const metadata: Metadata = {
   appleWebApp: {
     capable: true,
     statusBarStyle: "default",
-    title: "Shopee Profit",
+    title: "Sàn Cam",
   },
 };
 
@@ -56,3 +56,4 @@ export default function RootLayout({
     </html>
   );
 }
+

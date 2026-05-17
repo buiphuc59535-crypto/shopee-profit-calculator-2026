@@ -1,6 +1,6 @@
-# Shopee Profit Calculator 2026
+﻿# Sàn Cam Calculator 2026
 
-Web app/PWA tinh gia ban va loi nhuan Shopee cho seller TMĐT Viet Nam.
+Web app/PWA tính giá bán và lợi nhuận Sàn Cam cho seller TMĐT Việt Nam.
 
 ## Stack
 
@@ -18,7 +18,7 @@ copy .env.example .env.local
 npm run dev
 ```
 
-Dien Firebase web app config vao `.env.local`, bat Google provider trong Firebase Auth, tao Firestore database, sau do publish `firestore.rules`.
+Điền Firebase web app config vào `.env.local`, bật Google provider trong Firebase Auth, tạo Firestore database, sau đó publish `firestore.rules`.
 
 ## Firebase collections
 
@@ -28,13 +28,13 @@ Dien Firebase web app config vao `.env.local`, bat Google provider trong Firebas
 - `ads_reports/`
 - `settings/`
 
-Firestore query history dung `where(userId == uid)` va `orderBy(createdAt desc)`. Neu Firebase yeu cau index, bam link Firebase console trong error de tao composite index.
+Firestore query history dùng `where(userId == uid)` và `orderBy(createdAt desc)`. Nếu Firebase yêu cầu index, bấm link Firebase console trong error để tạo composite index.
 
 ## Deploy Vercel
 
-1. Push code len GitHub.
-2. Import project vao Vercel.
-3. Add cac bien `NEXT_PUBLIC_FIREBASE_*` trong Project Settings.
+1. Push code lên GitHub.
+2. Import project vào Vercel.
+3. Thêm các biến `NEXT_PUBLIC_FIREBASE_*` trong Project Settings.
 4. Build command: `npm run build`.
 5. Output framework preset: Next.js.
 
@@ -47,4 +47,4 @@ SELL_PRICE =
 (1 - (FIXED_FEE_PERCENT + 6% + 5.5% + 1.5% + 1% + ADS_PERCENT + RETURN_PERCENT + OPERATION_PERCENT))
 ```
 
-Voucher Xtra fee duoc cap `MIN(SELL_PRICE * 5.5%, 50000)`. Optional fields empty/invalid duoc tinh la `0`.
+Voucher Xtra fee được cap `MIN(SELL_PRICE * 5.5%, 50000)`. Optional fields empty/invalid được tính là `0`.

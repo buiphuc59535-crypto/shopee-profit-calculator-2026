@@ -1,11 +1,11 @@
-import * as React from "react";
+﻿import * as React from "react";
 import { cn } from "@/lib/utils";
 
 export function Card({ className, ...props }: React.HTMLAttributes<HTMLDivElement>) {
   return (
     <div
       className={cn(
-        "rounded-2xl border bg-card text-card-foreground shadow-sm shadow-orange-100/70 dark:shadow-none",
+        "rounded-2xl border bg-card text-card-foreground shadow-sm shadow-sky-100/70 dark:shadow-none",
         className,
       )}
       {...props}
@@ -45,3 +45,4 @@ export function CardContent({
 }: React.HTMLAttributes<HTMLDivElement>) {
   return <div className={cn("p-5 pt-0", className)} {...props} />;
 }
+

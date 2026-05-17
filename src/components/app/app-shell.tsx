@@ -1,4 +1,4 @@
-"use client";
+﻿"use client";
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
@@ -16,10 +16,10 @@ import { useAuth } from "@/contexts/auth-context";
 import { ThemeToggle } from "@/components/app/theme-toggle";
 
 const navItems = [
-  { href: "/dashboard", label: "Dashboard", icon: BarChart3 },
-  { href: "/calculator", label: "Tinh phi", icon: Calculator },
-  { href: "/history", label: "Lich su", icon: History },
-  { href: "/settings", label: "Cai dat", icon: Settings },
+  { href: "/dashboard", label: "Tổng quan", icon: BarChart3 },
+  { href: "/calculator", label: "Tính phí", icon: Calculator },
+  { href: "/history", label: "Lịch sử", icon: History },
+  { href: "/settings", label: "Cài đặt", icon: Settings },
 ];
 
 export function AppShell({ children }: { children: React.ReactNode }) {
@@ -42,7 +42,7 @@ export function AppShell({ children }: { children: React.ReactNode }) {
           </div>
           <Button variant="outline" className="w-full justify-start" onClick={logout}>
             <LogOut className="h-4 w-4" />
-            Dang xuat
+            Đăng xuất
           </Button>
         </div>
       </aside>
@@ -54,11 +54,11 @@ export function AppShell({ children }: { children: React.ReactNode }) {
               <Brand compact />
             </div>
             <div className="hidden text-sm text-muted-foreground lg:block">
-              Shopee Profit Calculator 2026
+              Sàn Cam Calculator 2026
             </div>
             <div className="flex items-center gap-2">
               <ThemeToggle />
-              <Button variant="outline" size="icon" onClick={logout} aria-label="Dang xuat">
+              <Button variant="outline" size="icon" onClick={logout} aria-label="Đăng xuất">
                 <LogOut className="h-4 w-4" />
               </Button>
             </div>
@@ -101,7 +101,7 @@ function Brand({ compact = false }: { compact?: boolean }) {
       </span>
       {!compact ? (
         <span>
-          <span className="block text-base font-black leading-tight">Shopee Profit</span>
+          <span className="block text-base font-black leading-tight">Sàn Cam</span>
           <span className="block text-xs font-semibold text-muted-foreground">Calculator 2026</span>
         </span>
       ) : null}
@@ -133,3 +133,4 @@ function NavLink({
     </Link>
   );
 }
+

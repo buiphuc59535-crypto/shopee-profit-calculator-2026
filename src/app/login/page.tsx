@@ -1,4 +1,4 @@
-"use client";
+﻿"use client";
 
 import { CircleUserRound, ShieldCheck, Smartphone, TrendingUp } from "lucide-react";
 import { AuthGate } from "@/components/app/auth-gate";
@@ -22,7 +22,7 @@ export default function LoginPage() {
                 <TrendingUp className="h-5 w-5" />
               </span>
               <div>
-                <p className="font-black">Shopee Profit</p>
+                <p className="font-black">Sàn Cam</p>
                 <p className="text-xs text-muted-foreground">Calculator 2026</p>
               </div>
             </div>
@@ -32,19 +32,19 @@ export default function LoginPage() {
           <section className="grid flex-1 items-center gap-8 py-8 lg:grid-cols-[1.05fr_0.95fr]">
             <div className="space-y-6">
               <div className="inline-flex rounded-full bg-muted px-3 py-1 text-sm font-semibold text-primary">
-                Seller tool cho thi truong Viet Nam
+                Công cụ cho seller Việt Nam
               </div>
               <h1 className="max-w-2xl text-4xl font-black leading-tight tracking-tight md:text-6xl">
-                Tinh gia ban Shopee 2026 nhanh, ro loi, dung phi.
+                Tính giá bán Sàn Cam 2026 nhanh, rõ lời, đúng phí.
               </h1>
               <p className="max-w-xl text-lg leading-8 text-muted-foreground">
-                Gom phi co dinh, giao dich, Voucher Xtra, thue HKD, ha tang, PI Ship, ads, hoan hang va van hanh trong mot workflow mobile-first.
+                Gồm phí cố định, giao dịch, Voucher Xtra, thuế HKD, hạ tầng, PI Ship, ads, hoàn hàng và vận hành trong một workflow mobile-first.
               </p>
               <div className="grid gap-3 sm:grid-cols-3">
                 {[
-                  ["Realtime", "Luu lich su bang Firestore"],
-                  ["PWA", "Cai dat nhu app mobile"],
-                  ["Export", "PDF va Excel cho doi van hanh"],
+                  ["Realtime", "Lưu lịch sử bằng Firestore"],
+                  ["PWA", "Cài đặt như app mobile"],
+                  ["Export", "PDF và Excel cho đội vận hành"],
                 ].map(([title, body]) => (
                   <Card key={title}>
                     <CardContent className="p-4">
@@ -57,28 +57,28 @@ export default function LoginPage() {
             </div>
 
             <Card className="mx-auto w-full max-w-md overflow-hidden">
-              <div className="bg-gradient-to-r from-primary to-orange-500 p-6 text-primary-foreground">
-                <p className="text-sm font-semibold text-white/80">Dang nhap</p>
-                <h2 className="mt-2 text-2xl font-black">Mo dashboard seller</h2>
+              <div className="bg-gradient-to-r from-primary to-sky-500 p-6 text-primary-foreground">
+                <p className="text-sm font-semibold text-white/80">Đăng nhập</p>
+                <h2 className="mt-2 text-2xl font-black">Mở tổng quan seller</h2>
               </div>
               <CardContent className="space-y-4 p-6">
                 {!firebaseReady ? (
                   <div className="rounded-2xl border border-amber-200 bg-amber-50 p-3 text-sm text-amber-900 dark:border-amber-900 dark:bg-amber-950/30 dark:text-amber-100">
-                    Dang chay demo mode. Them Firebase env tren Vercel de bat Google Login va luu Firestore that.
+                    Đang chạy demo mode. Thêm Firebase env trên Vercel để bật Google Login và lưu Firestore thật.
                   </div>
                 ) : null}
                 <Button className="w-full" size="lg" onClick={loginWithGoogle}>
                   <CircleUserRound className="h-5 w-5" />
-                  {firebaseReady ? "Login with Google" : "Vao app demo"}
+                  {firebaseReady ? "Đăng nhập Google" : "Vào app demo"}
                 </Button>
                 <div className="grid gap-3 text-sm text-muted-foreground">
                   <p className="flex items-center gap-2">
                     <ShieldCheck className="h-4 w-4 text-primary" />
-                    Firebase Auth va Firestore per-user history.
+                    Firebase Auth và Firestore per-user history.
                   </p>
                   <p className="flex items-center gap-2">
                     <Smartphone className="h-4 w-4 text-primary" />
-                    Toi uu touch target va sticky result tren mobile.
+                    Tối ưu touch target và sticky result trên mobile.
                   </p>
                 </div>
               </CardContent>
@@ -89,3 +89,4 @@ export default function LoginPage() {
     </AuthGate>
   );
 }
+

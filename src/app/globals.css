@@ -1,19 +1,19 @@
-@import "tailwindcss";
+﻿@import "tailwindcss";
 
 :root {
-  --background: #fff8f5;
+  --background: #f0f9ff;
   --foreground: #1f2937;
   --card: #ffffff;
   --card-foreground: #1f2937;
-  --muted: #fff1ea;
+  --muted: #e0f2fe;
   --muted-foreground: #667085;
-  --primary: #ee4d2d;
+  --primary: #0284c7;
   --primary-foreground: #ffffff;
-  --secondary: #f97316;
+  --secondary: #0ea5e9;
   --secondary-foreground: #ffffff;
-  --border: #fed7c4;
-  --input: #fed7c4;
-  --ring: #ee4d2d;
+  --border: #bae6fd;
+  --input: #bae6fd;
+  --ring: #0284c7;
   --success: #16a34a;
   --warning: #f59e0b;
   --danger: #dc2626;
@@ -42,19 +42,19 @@
 }
 
 .dark {
-  --background: #0f1115;
+  --background: #07111d;
   --foreground: #f7f7f8;
-  --card: #171a21;
+  --card: #0f1b2d;
   --card-foreground: #f7f7f8;
-  --muted: #242832;
+  --muted: #13263b;
   --muted-foreground: #a7adb9;
-  --primary: #ff663d;
+  --primary: #38bdf8;
   --primary-foreground: #ffffff;
-  --secondary: #fb923c;
-  --secondary-foreground: #111827;
-  --border: #2b303b;
-  --input: #3b414e;
-  --ring: #ff663d;
+  --secondary: #7dd3fc;
+  --secondary-foreground: #082f49;
+  --border: #1e3a5f;
+  --input: #1e3a5f;
+  --ring: #38bdf8;
 }
 
 * {
@@ -82,3 +82,4 @@ button {
     transform: translateX(100%);
   }
 }
+

@@ -1,4 +1,4 @@
-"use client";
+﻿"use client";
 
 import { zodResolver } from "@hookform/resolvers/zod";
 import { FileSearch, RotateCcw, Save, Sheet, FileText } from "lucide-react";
@@ -18,7 +18,7 @@ import { formatVnd } from "@/lib/utils";
 import type { CalculationRecord } from "@/types/domain";
 
 const schema = z.object({
-  productName: z.string().min(1, "Nhap ten san pham"),
+  productName: z.string().min(1, "Nhập tên sản phẩm"),
   costPrice: z.coerce.number().min(0),
   targetProfit: z.coerce.number().min(0),
   fixedFeePercent: z.coerce.number().min(0).max(80),
@@ -32,7 +32,7 @@ type FormInput = z.input<typeof schema>;
 type FormValues = z.output<typeof schema>;
 
 const defaults: FormValues = {
-  productName: "San pham demo",
+  productName: "Sản phẩm demo",
   costPrice: 120000,
   targetProfit: 45000,
   fixedFeePercent: 8,
@@ -77,7 +77,7 @@ export function CalculatorForm({ userId }: { userId: string }) {
     setMessage(null);
     try {
       await saveCalculation(record);
-      setMessage("Da luu vao lich su tinh toan.");
+      setMessage("Đã lưu vào lịch sử tính toán.");
     } finally {
       setSaving(false);
     }
@@ -90,12 +90,12 @@ export function CalculatorForm({ userId }: { userId: string }) {
     try {
       const fee = await extractFixedFeeFromPdf(file);
       if (fee === null) {
-        setMessage("Khong tim thay phi co dinh trong PDF. Hay nhap thu cong.");
+        setMessage("Không tìm thấy phí cố định trong PDF. Hãy nhập thủ công.");
         return;
       }
       form.setValue("fixedFeePercent", fee, { shouldValidate: true });
       await saveFeeConfig({ userId, fixedFeePercent: fee, source: "pdf", fileName: file.name });
-      setMessage(`Da doc phi co dinh ${fee}% tu PDF va luu cau hinh.`);
+      setMessage(`Đã đọc phí cố định ${fee}% từ PDF và lưu cấu hình.`);
     } finally {
       setPdfLoading(false);
     }
@@ -105,20 +105,20 @@ export function CalculatorForm({ userId }: { userId: string }) {
     <div className="grid gap-5 lg:grid-cols-[minmax(0,1fr)_420px]">
       <Card>
         <CardHeader>
-          <CardTitle>Tinh gia ban tu dong</CardTitle>
+          <CardTitle>Tính giá bán tự động</CardTitle>
           <CardDescription>
-            User chi can nhap cac muc 1, 9, 10, 11, 12, 13, 14. Cac muc con lai app tu tinh theo rule Shopee 2026.
+            Người dùng chỉ cần nhập các mục 1, 9, 10, 11, 12, 13, 14. Các mục còn lại app tự tính theo rule Sàn Cam 2026.
           </CardDescription>
         </CardHeader>
         <CardContent>
           <form className="grid gap-4 md:grid-cols-2" onSubmit={(event) => event.preventDefault()}>
             <div className="md:col-span-2">
-              <Input label="Ten san pham" placeholder="Ao thun local brand" {...form.register("productName")} />
+              <Input label="Tên sản phẩm" placeholder="Áo thun local brand" {...form.register("productName")} />
             </div>
-            <Input label="13. Gia von" type="number" inputMode="numeric" {...form.register("costPrice")} />
-            <Input label="14. Lai mong muon" type="number" inputMode="numeric" {...form.register("targetProfit")} />
-            <Input label="1. Phi co dinh %" type="number" inputMode="decimal" step="0.1" {...form.register("fixedFeePercent")} />
-            <Select label="9. Phi ads %" {...form.register("adsPercent")}>
+            <Input label="13. Giá vốn" type="number" inputMode="numeric" {...form.register("costPrice")} />
+            <Input label="14. Lãi mong muốn" type="number" inputMode="numeric" {...form.register("targetProfit")} />
+            <Input label="1. Phí cố định %" type="number" inputMode="decimal" step="0.1" {...form.register("fixedFeePercent")} />
+            <Select label="9. Phí ads %" {...form.register("adsPercent")}>
               {ADS_OPTIONS.map((option) => (
                 <option key={option} value={option}>
                   {option}%
@@ -126,11 +126,11 @@ export function CalculatorForm({ userId }: { userId: string }) {
               ))}
             </Select>
             <Input label="10. Voucher shop" type="number" inputMode="numeric" {...form.register("voucher")} />
-            <Input label="11. Hoan hang %" type="number" inputMode="decimal" step="0.1" {...form.register("returnPercent")} />
-            <Input label="12. Van hanh %" type="number" inputMode="decimal" step="0.1" {...form.register("operationPercent")} />
+            <Input label="11. Hoàn hàng %" type="number" inputMode="decimal" step="0.1" {...form.register("returnPercent")} />
+            <Input label="12. Vận hành %" type="number" inputMode="decimal" step="0.1" {...form.register("operationPercent")} />
 
             <label className="grid gap-2 text-sm font-medium text-foreground">
-              Upload PDF phi co dinh Shopee
+              Upload PDF phí cố định Sàn Cam
               <span className="flex h-12 items-center gap-3 rounded-xl border bg-card px-3">
                 <FileSearch className="h-4 w-4 text-primary" />
                 <input
@@ -145,7 +145,7 @@ export function CalculatorForm({ userId }: { userId: string }) {
 
             <div className="md:col-span-2">
               <div className="rounded-2xl bg-muted p-4 text-sm text-muted-foreground">
-                15. Gia ban san pham: <strong className="text-foreground">{formatVnd(result.sellPrice)}</strong>. Muc 3 duoc tinh dung rule MIN(gia ban x 5.5%, 50.000d).
+                15. Giá bán sản phẩm: <strong className="text-foreground">{formatVnd(result.sellPrice)}</strong>. Mục 3 được tính đúng rule MIN(giá bán x 5.5%, 50.000đ).
               </div>
             </div>
 
@@ -154,7 +154,7 @@ export function CalculatorForm({ userId }: { userId: string }) {
             <div className="grid gap-3 md:col-span-2 md:grid-cols-4">
               <Button type="button" onClick={handleSave} loading={saving}>
                 <Save className="h-4 w-4" />
-                Save
+                Lưu
               </Button>
               <Button type="button" variant="outline" onClick={() => exportCalculationPdf(record)}>
                 <FileText className="h-4 w-4" />
@@ -166,7 +166,7 @@ export function CalculatorForm({ userId }: { userId: string }) {
               </Button>
               <Button type="button" variant="secondary" onClick={() => form.reset(defaults)}>
                 <RotateCcw className="h-4 w-4" />
-                Reset
+                Đặt lại
               </Button>
             </div>
           </form>
@@ -180,11 +180,11 @@ export function CalculatorForm({ userId }: { userId: string }) {
       <div className="fixed inset-x-0 bottom-[72px] z-20 px-4 lg:hidden">
         <div className="rounded-2xl border bg-card p-4 shadow-xl">
           <div className="mb-3 flex items-center justify-between">
-            <span className="text-sm font-semibold text-muted-foreground">Gia ban de xuat</span>
+            <span className="text-sm font-semibold text-muted-foreground">Giá bán đề xuất</span>
             <span className="text-xl font-black text-primary">{formatVnd(result.sellPrice)}</span>
           </div>
           <div className="grid grid-cols-3 gap-2 text-center text-xs">
-            <span className="rounded-xl bg-muted p-2">Lai {formatVnd(result.realProfit)}</span>
+            <span className="rounded-xl bg-muted p-2">Lãi {formatVnd(result.realProfit)}</span>
             <span className="rounded-xl bg-muted p-2">Margin {result.netMargin.toFixed(1)}%</span>
             <span className="rounded-xl bg-muted p-2">ROAS {result.roas.toFixed(1)}</span>
           </div>
@@ -193,3 +193,4 @@ export function CalculatorForm({ userId }: { userId: string }) {
     </div>
   );
 }
+

@@ -1,4 +1,4 @@
-"use client";
+﻿"use client";
 
 import { AppShell } from "@/components/app/app-shell";
 import { AuthGate } from "@/components/app/auth-gate";
@@ -14,11 +14,12 @@ export default function CalculatorPage() {
     <AuthGate>
       <AppShell>
         <div className="mb-5">
-          <p className="text-sm font-semibold text-primary">Calculator</p>
-          <h1 className="text-2xl font-black tracking-tight md:text-3xl">Tinh loi nhuan Shopee 2026</h1>
+          <p className="text-sm font-semibold text-primary">Tính phí</p>
+          <h1 className="text-2xl font-black tracking-tight md:text-3xl">Tính lợi nhuận Sàn Cam 2026</h1>
         </div>
         {user ? <CalculatorForm userId={user.uid} /> : null}
       </AppShell>
     </AuthGate>
   );
 }
+

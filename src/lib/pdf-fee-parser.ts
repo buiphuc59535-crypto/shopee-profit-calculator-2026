@@ -1,4 +1,4 @@
-"use client";
+﻿"use client";
 
 export async function extractFixedFeeFromPdf(file: File) {
   const pdfjs = await import("pdfjs-dist");
@@ -30,3 +30,4 @@ export async function extractFixedFeeFromPdf(file: File) {
 
   return null;
 }
+

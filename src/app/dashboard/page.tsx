@@ -1,4 +1,4 @@
-"use client";
+﻿"use client";
 
 import Link from "next/link";
 import { Bar, BarChart, CartesianGrid, ResponsiveContainer, Tooltip, XAxis, YAxis } from "recharts";
@@ -28,29 +28,29 @@ export default function DashboardPage() {
       <AppShell>
         <div className="mb-6 flex flex-col justify-between gap-4 md:flex-row md:items-center">
           <div>
-            <p className="text-sm font-semibold text-primary">Dashboard</p>
-            <h1 className="text-2xl font-black tracking-tight md:text-3xl">Tong quan loi nhuan</h1>
+            <p className="text-sm font-semibold text-primary">Tổng quan</p>
+            <h1 className="text-2xl font-black tracking-tight md:text-3xl">Tổng quan lợi nhuận</h1>
           </div>
           <Button asChild>
             <Link href="/calculator">
               <Plus className="h-4 w-4" />
-              Tinh san pham moi
+              Tính sản phẩm mới
             </Link>
           </Button>
         </div>
 
         <div className="grid gap-4 md:grid-cols-4">
-          <Metric title="Tong lan tinh" value={stats.total.toString()} icon={Calculator} />
-          <Metric title="Avg margin" value={formatPercent(stats.avgMargin)} icon={TrendingUp} />
-          <Metric title="Avg ROAS" value={stats.avgRoas ? `${stats.avgRoas.toFixed(2)}x` : "0x"} icon={BarChart} />
-          <Metric title="Tong loi uoc tinh" value={formatVnd(stats.totalProfit)} icon={History} />
+          <Metric title="Tổng lần tính" value={stats.total.toString()} icon={Calculator} />
+          <Metric title="TB margin" value={formatPercent(stats.avgMargin)} icon={TrendingUp} />
+          <Metric title="TB ROAS" value={stats.avgRoas ? `${stats.avgRoas.toFixed(2)}x` : "0x"} icon={BarChart} />
+          <Metric title="Tổng lời ước tính" value={formatVnd(stats.totalProfit)} icon={History} />
         </div>
 
         <div className="mt-5 grid gap-5 lg:grid-cols-[minmax(0,1fr)_380px]">
           <Card>
             <CardHeader>
-              <CardTitle>Margin gan day</CardTitle>
-              <CardDescription>Bieu do realtime tu Firestore calculations.</CardDescription>
+              <CardTitle>Margin gần đây</CardTitle>
+              <CardDescription>Biểu đồ realtime từ Firestore calculations.</CardDescription>
             </CardHeader>
             <CardContent>
               {loading ? (
@@ -63,7 +63,7 @@ export default function DashboardPage() {
                       <XAxis dataKey="name" tickLine={false} axisLine={false} />
                       <YAxis tickLine={false} axisLine={false} />
                       <Tooltip />
-                      <Bar dataKey="margin" fill="#ee4d2d" radius={[8, 8, 0, 0]} />
+                      <Bar dataKey="margin" fill="#0284c7" radius={[8, 8, 0, 0]} />
                     </BarChart>
                   </ResponsiveContainer>
                 </div>
@@ -75,8 +75,8 @@ export default function DashboardPage() {
 
           <Card>
             <CardHeader>
-              <CardTitle>Recent calculations</CardTitle>
-              <CardDescription>5 san pham moi nhat.</CardDescription>
+              <CardTitle>Tính toán gần đây</CardTitle>
+              <CardDescription>5 sản phẩm mới nhất.</CardDescription>
             </CardHeader>
             <CardContent className="space-y-3">
               {loading ? (
@@ -92,7 +92,7 @@ export default function DashboardPage() {
                       <p className="font-bold text-primary">{formatVnd(item.realProfit)}</p>
                     </div>
                     <p className="mt-1 text-sm text-muted-foreground">
-                      Gia ban {formatVnd(item.sellPrice)} · Margin {item.netMargin.toFixed(1)}%
+                      Giá bán {formatVnd(item.sellPrice)} · Margin {item.netMargin.toFixed(1)}%
                     </p>
                   </div>
                 ))
@@ -134,8 +134,9 @@ function Metric({
 function EmptyState({ compact = false }: { compact?: boolean }) {
   return (
     <div className="flex h-52 flex-col items-center justify-center rounded-2xl bg-muted text-center">
-      <p className="font-bold">Chua co du lieu</p>
-      {!compact ? <p className="mt-1 text-sm text-muted-foreground">Hay tinh va luu san pham dau tien.</p> : null}
+      <p className="font-bold">Chưa có dữ liệu</p>
+      {!compact ? <p className="mt-1 text-sm text-muted-foreground">Hãy tính và lưu sản phẩm đầu tiên.</p> : null}
     </div>
   );
 }
+

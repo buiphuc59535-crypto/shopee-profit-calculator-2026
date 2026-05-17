@@ -1,4 +1,4 @@
-"use client";
+﻿"use client";
 
 import { useEffect, useMemo, useState } from "react";
 import { subscribeCalculations } from "@/lib/firestore";
@@ -40,3 +40,4 @@ export function useCalculations(userId?: string) {
 
   return { records, loading, stats };
 }
+

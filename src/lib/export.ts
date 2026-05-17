@@ -1,4 +1,4 @@
-"use client";
+﻿"use client";
 
 import ExcelJS from "exceljs";
 import jsPDF from "jspdf";
@@ -7,34 +7,34 @@ import { downloadBlob, formatPercent, formatVnd } from "@/lib/utils";
 
 export async function exportCalculationExcel(record: CalculationRecord) {
   const workbook = new ExcelJS.Workbook();
-  workbook.creator = "Shopee Profit Calculator 2026";
-  const sheet = workbook.addWorksheet("Profit");
+  workbook.creator = "Sàn Cam Calculator 2026";
+  const sheet = workbook.addWorksheet("Lợi nhuận");
 
   sheet.columns = [
-    { header: "Chi so", key: "label", width: 28 },
-    { header: "Gia tri", key: "value", width: 24 },
+    { header: "Chỉ số", key: "label", width: 32 },
+    { header: "Giá trị", key: "value", width: 24 },
   ];
 
   const rows = [
-    ["San pham", record.productName || "Chua dat ten"],
-    ["1. Phi co dinh", formatVnd(record.fixedFee)],
-    ["2. Phi xu ly giao dich 6%", formatVnd(record.transactionFee)],
+    ["Sản phẩm", record.productName || "Chưa đặt tên"],
+    ["1. Phí cố định", formatVnd(record.fixedFee)],
+    ["2. Phí xử lý giao dịch 6%", formatVnd(record.transactionFee)],
     ["3. DV Voucher Xtra 5.5% max 50k", formatVnd(record.voucherXtraFee)],
-    ["4. Thue HKD tam tinh 1.5%", formatVnd(record.taxFee)],
-    ["5. Phi QC co dinh 1%", formatVnd(record.qcFee)],
-    ["6. Phi ha tang", formatVnd(record.infraFee)],
-    ["7. Phi PI Ship", formatVnd(record.piShip)],
-    ["8. Tong phi Shopee", `${formatVnd(record.totalFee)} (${formatPercent(record.effectiveFeeRate)})`],
-    ["9. Phi quang cao uoc tinh", formatVnd(record.adsFee)],
+    ["4. Thuế HKD tạm tính 1.5%", formatVnd(record.taxFee)],
+    ["5. Phí QC cố định 1%", formatVnd(record.qcFee)],
+    ["6. Phí hạ tầng", formatVnd(record.infraFee)],
+    ["7. Phí PI Ship", formatVnd(record.piShip)],
+    ["8. Tổng phí Sàn Cam", `${formatVnd(record.totalFee)} (${formatPercent(record.effectiveFeeRate)})`],
+    ["9. Phí quảng cáo ước tính", formatVnd(record.adsFee)],
     ["10. Voucher shop", formatVnd(record.voucher ?? 0)],
-    ["11. Phi hoan hang uoc tinh", formatVnd(record.returnFee)],
-    ["12. Phi van hanh uoc tinh", formatVnd(record.operationFee)],
-    ["13. Gia von", formatVnd(record.costPrice)],
-    ["14. Lai mong muon", formatVnd(record.targetProfit)],
-    ["15. Gia ban san pham", formatVnd(record.sellPrice)],
-    ["16. Lai thuc te", formatVnd(record.realProfit)],
-    ["17. Lai rong", formatPercent(record.netMargin)],
-    ["Diem hoa von", formatVnd(record.breakEven)],
+    ["11. Phí hoàn hàng ước tính", formatVnd(record.returnFee)],
+    ["12. Phí vận hành ước tính", formatVnd(record.operationFee)],
+    ["13. Giá vốn", formatVnd(record.costPrice)],
+    ["14. Lãi mong muốn", formatVnd(record.targetProfit)],
+    ["15. Giá bán sản phẩm", formatVnd(record.sellPrice)],
+    ["16. Lãi thực tế", formatVnd(record.realProfit)],
+    ["17. Lãi ròng", formatPercent(record.netMargin)],
+    ["Điểm hòa vốn", formatVnd(record.breakEven)],
     ["ROAS", record.roas.toFixed(2)],
   ];
 
@@ -43,15 +43,15 @@ export async function exportCalculationExcel(record: CalculationRecord) {
   sheet.getRow(1).fill = {
     type: "pattern",
     pattern: "solid",
-    fgColor: { argb: "FFEE4D2D" },
+    fgColor: { argb: "FF0284C7" },
   };
   sheet.eachRow((row) => {
     row.eachCell((cell) => {
       cell.border = {
-        top: { style: "thin", color: { argb: "FFFED7C4" } },
-        left: { style: "thin", color: { argb: "FFFED7C4" } },
-        bottom: { style: "thin", color: { argb: "FFFED7C4" } },
-        right: { style: "thin", color: { argb: "FFFED7C4" } },
+        top: { style: "thin", color: { argb: "FFBAE6FD" } },
+        left: { style: "thin", color: { argb: "FFBAE6FD" } },
+        bottom: { style: "thin", color: { argb: "FFBAE6FD" } },
+        right: { style: "thin", color: { argb: "FFBAE6FD" } },
       };
       cell.alignment = { vertical: "middle" };
     });
@@ -62,35 +62,35 @@ export async function exportCalculationExcel(record: CalculationRecord) {
     new Blob([buffer], {
       type: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
     }),
-    `${slug(record.productName)}-shopee-profit.xlsx`,
+    `${slug(record.productName)}-san-cam-profit.xlsx`,
   );
 }
 
 export function exportCalculationPdf(record: CalculationRecord) {
   const doc = new jsPDF();
-  doc.setFillColor(238, 77, 45);
+  doc.setFillColor(2, 132, 199);
   doc.rect(0, 0, 210, 32, "F");
   doc.setTextColor(255, 255, 255);
   doc.setFontSize(18);
-  doc.text("Shopee Profit Calculator 2026", 14, 18);
+  doc.text("Sàn Cam Calculator 2026", 14, 18);
   doc.setFontSize(10);
-  doc.text(record.productName || "San pham chua dat ten", 14, 26);
+  doc.text(record.productName || "Sản phẩm chưa đặt tên", 14, 26);
 
   doc.setTextColor(31, 41, 55);
   doc.setFontSize(12);
   const rows = [
-    ["1. Phi co dinh", formatVnd(record.fixedFee)],
-    ["2. Phi xu ly giao dich", formatVnd(record.transactionFee)],
+    ["1. Phí cố định", formatVnd(record.fixedFee)],
+    ["2. Phí xử lý giao dịch", formatVnd(record.transactionFee)],
     ["3. Voucher Xtra", formatVnd(record.voucherXtraFee)],
-    ["4. Thue HKD", formatVnd(record.taxFee)],
-    ["5. Phi QC", formatVnd(record.qcFee)],
-    ["8. Tong phi Shopee", formatVnd(record.totalFee)],
-    ["15. Gia ban san pham", formatVnd(record.sellPrice)],
-    ["16. Lai thuc te", formatVnd(record.realProfit)],
-    ["17. Lai rong", formatPercent(record.netMargin)],
-    ["Diem hoa von", formatVnd(record.breakEven)],
+    ["4. Thuế HKD", formatVnd(record.taxFee)],
+    ["5. Phí QC", formatVnd(record.qcFee)],
+    ["8. Tổng phí Sàn Cam", formatVnd(record.totalFee)],
+    ["15. Giá bán sản phẩm", formatVnd(record.sellPrice)],
+    ["16. Lãi thực tế", formatVnd(record.realProfit)],
+    ["17. Lãi ròng", formatPercent(record.netMargin)],
+    ["Điểm hòa vốn", formatVnd(record.breakEven)],
     ["ROAS", record.roas.toFixed(2)],
-    ["Safe CPC goi y", formatVnd(record.safeCpc)],
+    ["Safe CPC gợi ý", formatVnd(record.safeCpc)],
   ];
 
   let y = 48;
@@ -104,8 +104,8 @@ export function exportCalculationPdf(record: CalculationRecord) {
 
   doc.setFontSize(9);
   doc.setTextColor(102, 112, 133);
-  doc.text("Bao cao tao tu du lieu tinh phi Shopee 2026.", 14, 280);
-  doc.save(`${slug(record.productName)}-shopee-profit.pdf`);
+  doc.text("Báo cáo tạo từ dữ liệu tính phí Sàn Cam 2026.", 14, 280);
+  doc.save(`${slug(record.productName)}-san-cam-profit.pdf`);
 }
 
 function slug(value: string) {
@@ -114,3 +114,5 @@ function slug(value: string) {
     .replace(/[^a-z0-9]+/g, "-")
     .replace(/(^-|-$)/g, "");
 }
+
+

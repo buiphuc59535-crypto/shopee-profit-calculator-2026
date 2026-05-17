@@ -1,4 +1,4 @@
-"use client";
+﻿"use client";
 
 import {
   onAuthStateChanged,
@@ -38,7 +38,7 @@ type DemoUser = {
 const demoUser: DemoUser = {
   uid: "demo-user",
   email: "demo@seller.local",
-  displayName: "Demo Seller",
+  displayName: "Seller Demo",
   photoURL: null,
 };
 
@@ -108,3 +108,4 @@ export function useAuth() {
   }
   return context;
 }
+
