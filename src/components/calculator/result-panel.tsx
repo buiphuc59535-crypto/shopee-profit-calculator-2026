@@ -13,9 +13,9 @@ export function ResultPanel({ result }: { result: CalculationResult }) {
   const items = [
     ["1. Phí cố định", formatVnd(result.fixedFee)],
     ["2. Phí xử lý giao dịch 6%", formatVnd(result.transactionFee)],
-    ["3. DV Voucher Xtra 5.5% max 50k", formatVnd(result.voucherXtraFee)],
+    ["3. Voucher Xtra 5.5% (max 50k/1SP)", formatVnd(result.voucherXtraFee)],
     ["4. Thuế HKD tạm tính 1.5%", formatVnd(result.taxFee)],
-    ["5. Phí QC cố định 1%", formatVnd(result.qcFee)],
+    ["5. Phí quảng cáo cố định 1%", formatVnd(result.qcFee)],
     ["6. Phí hạ tầng", formatVnd(result.infraFee)],
     ["7. Phí PI Ship", formatVnd(result.piShip)],
     ["8. Tổng phí Sàn Cam", `${formatVnd(result.totalFee)} (${formatPercent(result.effectiveFeeRate)})`],
@@ -52,7 +52,20 @@ export function ResultPanel({ result }: { result: CalculationResult }) {
           <div className="grid gap-3">
             {items.map(([label, value]) => (
               <div key={label} className="flex items-center justify-between gap-4 rounded-xl bg-muted p-3">
-                <span className="text-sm text-muted-foreground">{label}</span>
+                <span className="flex items-center gap-1 text-sm text-muted-foreground">
+                  {label}
+                  {label.startsWith("8.") ? (
+                    <span
+                      className="group relative inline-flex h-5 w-5 cursor-help items-center justify-center rounded-full border border-primary/30 bg-card text-xs font-bold text-primary"
+                      aria-label="Tổng phí Sàn Cam bao gồm những phí nào?"
+                    >
+                      ?
+                      <span className="pointer-events-none absolute bottom-full left-1/2 z-20 mb-2 hidden w-72 -translate-x-1/2 rounded-xl border bg-card p-3 text-left text-xs font-medium leading-5 text-foreground shadow-lg group-hover:block">
+                        Bao gồm: 1. Phí cố định, 2. Phí xử lý giao dịch 6%, 3. Voucher Xtra 5.5% (max 50k/1SP), 4. Thuế HKD tạm tính 1.5%, 5. Phí quảng cáo cố định 1%. Chưa bao gồm phí hạ tầng, PI Ship, ads, voucher shop, hoàn hàng và vận hành.
+                      </span>
+                    </span>
+                  ) : null}
+                </span>
                 <span className="text-right font-bold">{value}</span>
               </div>
             ))}
