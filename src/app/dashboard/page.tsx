@@ -63,7 +63,7 @@ export default function DashboardPage() {
                       <XAxis dataKey="name" tickLine={false} axisLine={false} />
                       <YAxis tickLine={false} axisLine={false} />
                       <Tooltip />
-                      <Bar dataKey="margin" fill="#0284c7" radius={[8, 8, 0, 0]} />
+                      <Bar dataKey="margin" fill="#155eef" radius={[8, 8, 0, 0]} />
                     </BarChart>
                   </ResponsiveContainer>
                 </div>

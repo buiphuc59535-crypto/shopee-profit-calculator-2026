@@ -43,7 +43,7 @@ export async function exportCalculationExcel(record: CalculationRecord) {
   sheet.getRow(1).fill = {
     type: "pattern",
     pattern: "solid",
-    fgColor: { argb: "FF0284C7" },
+    fgColor: { argb: "FF155EEF" },
   };
   sheet.eachRow((row) => {
     row.eachCell((cell) => {
@@ -68,7 +68,7 @@ export async function exportCalculationExcel(record: CalculationRecord) {
 
 export function exportCalculationPdf(record: CalculationRecord) {
   const doc = new jsPDF();
-  doc.setFillColor(2, 132, 199);
+  doc.setFillColor(21, 94, 239);
   doc.rect(0, 0, 210, 32, "F");
   doc.setTextColor(255, 255, 255);
   doc.setFontSize(18);

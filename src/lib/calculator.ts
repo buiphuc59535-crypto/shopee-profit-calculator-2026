@@ -11,7 +11,7 @@ export const SAN_CAM_FEES = {
   piShip: 2700,
 } as const;
 
-export const ADS_OPTIONS = [3, 5, 10, 15, 20] as const;
+export const ADS_OPTIONS = [0, 3, 5, 10, 15, 20] as const;
 
 export function calculateProfit(input: CalculatorInput): CalculationResult {
   const costPrice = positive(input.costPrice);
