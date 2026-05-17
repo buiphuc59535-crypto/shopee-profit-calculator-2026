@@ -15,7 +15,7 @@ import { Input } from "@/components/ui/input";
 import { Skeleton } from "@/components/ui/skeleton";
 import { useCalculations } from "@/hooks/use-calculations";
 import { exportCalculationListExcel, exportCalculationListPdf } from "@/lib/export";
-import { cn, formatDateTime, formatPercent, formatVnd } from "@/lib/utils";
+import { formatDateTime, formatPercent, formatVnd } from "@/lib/utils";
 import type { CalculationRecord } from "@/types/domain";
 
 const PAGE_SIZE = 10;
@@ -25,7 +25,6 @@ export function SavedCalculations({ userId }: { userId: string }) {
   const [keyword, setKeyword] = useState("");
   const [page, setPage] = useState(1);
   const [selectedKeys, setSelectedKeys] = useState<Set<string>>(new Set());
-  const [expandedKeys, setExpandedKeys] = useState<Set<string>>(new Set());
 
   const filtered = useMemo(() => {
     const query = keyword.trim().toLowerCase();
@@ -81,16 +80,6 @@ export function SavedCalculations({ userId }: { userId: string }) {
       } else {
         pageRecords.forEach((item) => next.add(getRecordKey(item)));
       }
-      return next;
-    });
-  }
-
-  function toggleProductName(item: CalculationRecord) {
-    const key = getRecordKey(item);
-    setExpandedKeys((current) => {
-      const next = new Set(current);
-      if (next.has(key)) next.delete(key);
-      else next.add(key);
       return next;
     });
   }
@@ -189,8 +178,8 @@ export function SavedCalculations({ userId }: { userId: string }) {
                 <tbody>
                   {pageRecords.map((item, index) => {
                     const key = getRecordKey(item);
-                    const expanded = expandedKeys.has(key);
                     const selected = selectedKeys.has(key);
+                    const productName = item.productName || "Chưa đặt tên";
 
                     return (
                       <tr key={key} className="bg-muted">
@@ -212,18 +201,13 @@ export function SavedCalculations({ userId }: { userId: string }) {
                             {formatDateTime(item.createdAt)}
                           </span>
                         </td>
-                        <td className="w-[360px] px-3 py-3">
-                          <button
-                            type="button"
-                            title={item.productName || "Chưa đặt tên"}
-                            className={cn(
-                              "block w-full text-left font-bold text-foreground",
-                              expanded ? "whitespace-normal break-words" : "truncate",
-                            )}
-                            onClick={() => toggleProductName(item)}
+                        <td className="w-[300px] max-w-[300px] px-3 py-3">
+                          <p
+                            title={productName}
+                            className="block max-w-[280px] truncate font-bold text-foreground"
                           >
-                            {item.productName || "Chưa đặt tên"}
-                          </button>
+                            {truncateProductName(productName)}
+                          </p>
                           <p className="text-xs text-muted-foreground">
                             SKU: {item.sku?.trim() || "Chưa nhập"}
                           </p>
@@ -309,4 +293,11 @@ export function SavedCalculations({ userId }: { userId: string }) {
 
 function getRecordKey(item: CalculationRecord) {
   return item.id ?? `${item.userId}-${item.productName}-${item.sku ?? ""}-${formatDateTime(item.createdAt)}`;
+}
+
+function truncateProductName(value: string) {
+  const words = value.trim().split(/\s+/).filter(Boolean);
+  if (words.length > 10) return `${words.slice(0, 10).join(" ")}...`;
+  if (value.length > 58) return `${value.slice(0, 58)}...`;
+  return value;
 }
