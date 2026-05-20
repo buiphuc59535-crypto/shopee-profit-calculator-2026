@@ -2,6 +2,6 @@
 
 import { SanCamStandaloneCalculator } from "@/components/san-cam/standalone-calculator";
 
-export default function TinhPhiSanCamPage() {
+export default function TinhChiPhiLoiNhuanPage() {
   return <SanCamStandaloneCalculator />;
 }
