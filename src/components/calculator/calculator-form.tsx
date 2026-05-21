@@ -175,19 +175,19 @@ export function CalculatorForm({ userId }: { userId: string }) {
   }
 
   return (
-    <div className="grid items-start gap-5 xl:grid-cols-[minmax(0,1fr)_420px]">
-      <form className="grid gap-5" onSubmit={(event) => event.preventDefault()}>
-        <Card className="overflow-hidden">
-          <CardHeader className="border-b bg-muted/50 dark:border-slate-700 dark:bg-slate-950/70">
+    <div className="grid items-start gap-4 xl:grid-cols-[minmax(0,1fr)_380px]">
+      <form className="grid gap-4" onSubmit={(event) => event.preventDefault()}>
+        <Card className="overflow-hidden border-blue-200 shadow-sm dark:border-slate-700">
+          <CardHeader className="border-b border-blue-200 bg-sky-50/80 px-5 py-4 dark:border-slate-700 dark:bg-slate-950/70">
             <CardTitle>Tính phí & lợi nhuận TikTok Shop 2026</CardTitle>
           </CardHeader>
-          <CardContent className="grid gap-5 pt-5">
+          <CardContent className="grid gap-4 p-4 md:p-5">
             <section className="grid gap-4 md:grid-cols-2">
               <Input label="Tên sản phẩm" placeholder="VD: Son kem phiên bản mới" {...form.register("productName")} />
               <Input label="SKU / mã hàng" placeholder="VD: TTS-001" {...form.register("sku")} />
             </section>
 
-            <section className="grid gap-4 rounded-2xl border bg-background/70 p-4 dark:border-slate-700 dark:bg-slate-900/70">
+            <section className="grid gap-4 rounded-2xl border border-blue-200 bg-sky-50/45 p-4 dark:border-slate-700 dark:bg-slate-900/70">
               <SectionTitle
                 title="1. Phí hoa hồng (%)"
                 description="Tự nhập hoặc chọn shop và chọn ngành hàng"
@@ -200,8 +200,8 @@ export function CalculatorForm({ userId }: { userId: string }) {
                       key={option.value}
                       type="button"
                       className={cn(
-                        "rounded-2xl border bg-card p-4 text-left transition hover:-translate-y-0.5 hover:border-primary dark:bg-slate-950/45 dark:hover:bg-slate-900",
-                        values.shopType === option.value && "border-primary bg-red-50 text-red-700 dark:bg-red-950/35 dark:text-red-100",
+                        "rounded-2xl border bg-card p-4 text-left transition hover:-translate-y-0.5 hover:border-blue-500 dark:bg-slate-950/45 dark:hover:bg-slate-900",
+                        values.shopType === option.value && "border-blue-600 bg-blue-600 text-white shadow-lg shadow-blue-200 dark:bg-blue-700 dark:text-white",
                       )}
                       onClick={() => {
                         form.setValue("shopType", option.value, { shouldDirty: true });
@@ -221,7 +221,7 @@ export function CalculatorForm({ userId }: { userId: string }) {
                 </div>
               </div>
 
-              <div className="grid gap-3 rounded-2xl border border-red-100 bg-red-50/40 p-4 dark:border-red-900/50 dark:bg-red-950/20">
+              <div className="grid gap-3 rounded-2xl border border-blue-200 bg-white p-4 shadow-sm dark:border-slate-700 dark:bg-slate-950/45">
                 <PercentField
                   label="Phí hoa hồng đang áp dụng"
                   placeholder="Tự nhập hoặc chọn shop và chọn ngành hàng."
@@ -269,7 +269,7 @@ export function CalculatorForm({ userId }: { userId: string }) {
                               className={cn(
                                 "rounded-2xl border px-3 py-2 text-center",
                                 values.shopType === "regular"
-                                  ? "border-red-300 bg-red-50 text-red-700 dark:border-red-900 dark:bg-red-950/30 dark:text-red-200"
+                                  ? "border-blue-300 bg-blue-50 text-blue-700 dark:border-blue-900 dark:bg-blue-950/30 dark:text-blue-200"
                                   : "bg-muted text-muted-foreground",
                               )}
                             >
@@ -282,7 +282,7 @@ export function CalculatorForm({ userId }: { userId: string }) {
                               className={cn(
                                 "rounded-2xl border px-3 py-2 text-center",
                                 values.shopType === "mall"
-                                  ? "border-red-300 bg-red-50 text-red-700 dark:border-red-900 dark:bg-red-950/30 dark:text-red-200"
+                                  ? "border-blue-300 bg-blue-50 text-blue-700 dark:border-blue-900 dark:bg-blue-950/30 dark:text-blue-200"
                                   : "bg-muted text-muted-foreground",
                               )}
                             >
@@ -300,10 +300,10 @@ export function CalculatorForm({ userId }: { userId: string }) {
                   ) : null}
 
                   {selectedCategory ? (
-                    <div className="rounded-2xl border border-red-200 bg-red-50 p-4 shadow-sm dark:border-red-900/60 dark:bg-red-950/25">
+                    <div className="rounded-2xl border border-blue-200 bg-blue-50 p-4 shadow-sm dark:border-blue-900/60 dark:bg-blue-950/25">
                       <div className="flex items-start justify-between gap-3">
                         <div>
-                          <p className="text-xs font-black uppercase text-red-600">Ngành đang áp dụng</p>
+                          <p className="text-xs font-black uppercase text-blue-600">Ngành đang áp dụng</p>
                           <p className="mt-2 text-base font-black text-foreground">
                             {selectedCategory.categoryPath}
                           </p>
@@ -312,7 +312,7 @@ export function CalculatorForm({ userId }: { userId: string }) {
                               className={cn(
                                 "rounded-xl border px-3 py-2",
                                 values.shopType === "regular"
-                                  ? "border-red-300 bg-white text-red-700 dark:border-red-800 dark:bg-red-950/45 dark:text-red-100"
+                                  ? "border-blue-300 bg-white text-blue-700 dark:border-blue-800 dark:bg-blue-950/45 dark:text-blue-100"
                                   : "bg-white/60 text-muted-foreground dark:border-slate-700 dark:bg-slate-950/65",
                               )}
                             >
@@ -325,7 +325,7 @@ export function CalculatorForm({ userId }: { userId: string }) {
                               className={cn(
                                 "rounded-xl border px-3 py-2",
                                 values.shopType === "mall"
-                                  ? "border-red-300 bg-white text-red-700 dark:border-red-800 dark:bg-red-950/45 dark:text-red-100"
+                                  ? "border-blue-300 bg-white text-blue-700 dark:border-blue-800 dark:bg-blue-950/45 dark:text-blue-100"
                                   : "bg-white/60 text-muted-foreground dark:border-slate-700 dark:bg-slate-950/65",
                               )}
                             >
@@ -351,7 +351,7 @@ export function CalculatorForm({ userId }: { userId: string }) {
               ) : null}
             </section>
 
-            <section className="grid gap-3 rounded-2xl border bg-background/70 p-4 dark:border-slate-700 dark:bg-slate-900/70">
+            <section className="grid gap-3 rounded-2xl border border-blue-200 bg-sky-50/45 p-4 dark:border-slate-700 dark:bg-slate-900/70">
               <SectionTitle title="Chi phí đầu vào" description="(tự điền theo mô hình kinh doanh của bạn)" inline />
               <div className="grid gap-4 md:grid-cols-2">
                 <MoneyField label="9. Voucher shop" placeholder="0" value={values.voucherShop} onChange={(value) => form.setValue("voucherShop", value, { shouldValidate: true })} />
@@ -363,7 +363,7 @@ export function CalculatorForm({ userId }: { userId: string }) {
               </div>
             </section>
 
-            <section className="grid gap-3 rounded-2xl border bg-background/70 p-4 dark:border-slate-700 dark:bg-slate-900/70">
+            <section className="grid gap-3 rounded-2xl border border-blue-200 bg-sky-50/45 p-4 dark:border-slate-700 dark:bg-slate-900/70">
               <SectionTitle title="8. Phí Ads (%)" description="Chọn một mức nhanh." />
               <div className="grid grid-cols-3 gap-2 sm:grid-cols-6">
                 {ADS_OPTIONS.map((option) => (
@@ -389,7 +389,7 @@ export function CalculatorForm({ userId }: { userId: string }) {
           </CardContent>
         </Card>
 
-        <Card>
+        <Card className="border-blue-200 shadow-sm dark:border-slate-700">
           <CardContent className="grid gap-4 pt-5">
             <div className="grid gap-3 sm:grid-cols-2">
               <Button type="button" onClick={handleSave} loading={saving} disabled={result.isInvalid}>
@@ -419,7 +419,7 @@ export function CalculatorForm({ userId }: { userId: string }) {
                   <Button
                     asChild
                     type="button"
-                    className="h-14 rounded-2xl bg-blue-600 text-base font-black shadow-lg shadow-blue-200 hover:bg-blue-700"
+                    className="h-14 whitespace-normal rounded-2xl bg-blue-600 text-center text-sm font-black leading-tight shadow-lg shadow-blue-200 hover:bg-blue-700 sm:text-base"
                   >
                     <a href="https://www.facebook.com/buiphuc59535" target="_blank" rel="noopener noreferrer">
                       <Users className="h-4 w-4" />
@@ -429,7 +429,7 @@ export function CalculatorForm({ userId }: { userId: string }) {
                   <Button
                     asChild
                     type="button"
-                    className="h-14 rounded-2xl bg-cyan-600 text-base font-black shadow-lg shadow-cyan-200 hover:bg-cyan-700"
+                    className="h-14 whitespace-normal rounded-2xl bg-cyan-600 text-center text-sm font-black leading-tight shadow-lg shadow-cyan-200 hover:bg-cyan-700 sm:text-base"
                   >
                     <a href="https://www.facebook.com/buiphuc59535" target="_blank" rel="noopener noreferrer">
                       <Users className="h-4 w-4" />
@@ -439,7 +439,7 @@ export function CalculatorForm({ userId }: { userId: string }) {
                   <Button
                     asChild
                     type="button"
-                    className="h-14 rounded-2xl bg-emerald-600 text-base font-black shadow-lg shadow-emerald-200 hover:bg-emerald-700"
+                    className="h-14 whitespace-normal rounded-2xl bg-emerald-600 text-center text-sm font-black leading-tight shadow-lg shadow-emerald-200 hover:bg-emerald-700 sm:text-base"
                   >
                     <a href="https://zalo.me/0846484333" target="_blank" rel="noopener noreferrer">
                       <Send className="h-4 w-4" />
@@ -453,7 +453,7 @@ export function CalculatorForm({ userId }: { userId: string }) {
         </Card>
       </form>
 
-      <aside className="xl:sticky xl:top-24">
+      <aside className="xl:sticky xl:top-4">
         <ResultPanel result={result} hasInput={hasMeaningfulInput} inputValues={values} />
       </aside>
     </div>
