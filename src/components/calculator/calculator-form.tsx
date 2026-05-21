@@ -353,12 +353,12 @@ export function CalculatorForm({ userId }: { userId: string }) {
             <section className="grid gap-3 rounded-2xl border border-blue-200 bg-sky-50/45 p-4 dark:border-slate-700 dark:bg-slate-950/45">
               <SectionTitle title="Chi phí đầu vào" description="(tự điền theo mô hình kinh doanh của bạn)" inline />
               <div className="grid gap-4 md:grid-cols-2">
+                <MoneyField label="13. Giá vốn" value={values.costPrice} onChange={(value) => form.setValue("costPrice", value, { shouldValidate: true })} />
+                <MoneyField label="14. Lãi mong muốn" value={values.desiredProfit} onChange={(value) => form.setValue("desiredProfit", value, { shouldValidate: true })} />
                 <MoneyField label="9. Voucher shop" placeholder="0" value={values.voucherShop} onChange={(value) => form.setValue("voucherShop", value, { shouldValidate: true })} />
                 <PercentField label="10. Phí Aff (%)" value={values.affFee} onChange={(value) => form.setValue("affFee", value, { shouldValidate: true })} />
                 <PercentField label="11. Vận hành (%)" value={values.operationFee} onChange={(value) => form.setValue("operationFee", value, { shouldValidate: true })} />
                 <PercentField label="12. Hoàn hàng/thất thoát (%)" value={values.returnLossFee} onChange={(value) => form.setValue("returnLossFee", value, { shouldValidate: true })} />
-                <MoneyField label="13. Giá vốn" value={values.costPrice} onChange={(value) => form.setValue("costPrice", value, { shouldValidate: true })} />
-                <MoneyField label="14. Lãi mong muốn" value={values.desiredProfit} onChange={(value) => form.setValue("desiredProfit", value, { shouldValidate: true })} />
               </div>
             </section>
 
