@@ -61,16 +61,13 @@ function EmbedHeightBridge() {
     const params = new URLSearchParams(window.location.search);
     if (params.get("mexo_embed") !== "1") return;
     const targetOrigin = getParentOrigin();
-    const isWpEmbed = params.get("wp_embed") === "1";
-    const mobileQuery = window.matchMedia("(max-width: 767px)");
 
     const postHeight = () => {
-      const height = Math.max(
-        document.body.scrollHeight,
-        document.documentElement.scrollHeight,
-        document.body.offsetHeight,
-        document.documentElement.offsetHeight,
-      ) + 48;
+      const contentBottom = Array.from(document.body.children).reduce((bottom, element) => {
+        const rect = element.getBoundingClientRect();
+        return Math.max(bottom, rect.bottom + window.scrollY);
+      }, 0);
+      const height = Math.ceil(Math.max(contentBottom, document.body.scrollHeight) + 24);
 
       window.parent?.postMessage(
         {
@@ -81,21 +78,11 @@ function EmbedHeightBridge() {
       );
     };
 
-    const syncMobileScrollMode = () => {
-      const shouldLockInnerScroll = isWpEmbed && mobileQuery.matches;
-      document.documentElement.style.overflowY = shouldLockInnerScroll ? "hidden" : "";
-      document.body.style.overflowY = shouldLockInnerScroll ? "hidden" : "";
-    };
-
-    document.documentElement.style.minHeight = "100%";
-    document.body.style.minHeight = "100%";
     document.documentElement.style.overflowX = "hidden";
     document.body.style.overflowX = "hidden";
-    syncMobileScrollMode();
 
     const resizeObserver = new ResizeObserver(postHeight);
     resizeObserver.observe(document.body);
-    resizeObserver.observe(document.documentElement);
 
     postHeight();
     requestAnimationFrame(postHeight);
@@ -104,7 +91,6 @@ function EmbedHeightBridge() {
     window.addEventListener("load", postHeight);
     window.addEventListener("input", postHeight, true);
     window.addEventListener("click", postHeight, true);
-    mobileQuery.addEventListener("change", syncMobileScrollMode);
 
     return () => {
       resizeObserver.disconnect();
@@ -113,13 +99,8 @@ function EmbedHeightBridge() {
       window.removeEventListener("load", postHeight);
       window.removeEventListener("input", postHeight, true);
       window.removeEventListener("click", postHeight, true);
-      mobileQuery.removeEventListener("change", syncMobileScrollMode);
-      document.documentElement.style.minHeight = "";
-      document.body.style.minHeight = "";
       document.documentElement.style.overflowX = "";
       document.body.style.overflowX = "";
-      document.documentElement.style.overflowY = "";
-      document.body.style.overflowY = "";
     };
   }, []);
 
