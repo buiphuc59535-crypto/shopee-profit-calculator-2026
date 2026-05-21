@@ -5,16 +5,9 @@ import { AuthGate } from "@/components/app/auth-gate";
 import { CalculatorForm } from "@/components/calculator/calculator-form";
 import { SavedCalculations } from "@/components/calculator/saved-calculations";
 import { useAuth } from "@/contexts/auth-context";
-import { useEffect, useState } from "react";
 
 export default function CalculatorPage() {
   const { user } = useAuth();
-  const [isMexoEmbed, setIsMexoEmbed] = useState(false);
-
-  useEffect(() => {
-    const params = new URLSearchParams(window.location.search);
-    setIsMexoEmbed(params.get("mexo_embed") === "1" || params.get("wp_embed") === "1");
-  }, []);
 
   return (
     <AuthGate>
@@ -27,9 +20,7 @@ export default function CalculatorPage() {
         {user ? (
           <div className="grid gap-5">
             <CalculatorForm userId={user.uid} />
-            <div className={isMexoEmbed ? "hidden md:block" : undefined}>
-              <SavedCalculations userId={user.uid} />
-            </div>
+            <SavedCalculations userId={user.uid} />
           </div>
         ) : null}
       </AppShell>
