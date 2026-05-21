@@ -67,7 +67,7 @@ function EmbedHeightBridge() {
         const rect = element.getBoundingClientRect();
         return Math.max(bottom, rect.bottom + window.scrollY);
       }, 0);
-      const height = Math.ceil(Math.max(contentBottom, document.body.scrollHeight) + 24);
+      const height = Math.ceil(Math.max(contentBottom, 800) + 24);
 
       window.parent?.postMessage(
         {
@@ -78,6 +78,10 @@ function EmbedHeightBridge() {
       );
     };
 
+    document.documentElement.style.height = "auto";
+    document.body.style.height = "auto";
+    document.documentElement.style.minHeight = "0";
+    document.body.style.minHeight = "0";
     document.documentElement.style.overflowX = "hidden";
     document.body.style.overflowX = "hidden";
 
@@ -101,6 +105,10 @@ function EmbedHeightBridge() {
       window.removeEventListener("click", postHeight, true);
       document.documentElement.style.overflowX = "";
       document.body.style.overflowX = "";
+      document.documentElement.style.height = "";
+      document.body.style.height = "";
+      document.documentElement.style.minHeight = "";
+      document.body.style.minHeight = "";
     };
   }, []);
 
