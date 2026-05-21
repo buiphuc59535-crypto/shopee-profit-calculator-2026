@@ -177,7 +177,7 @@ export function CalculatorForm({ userId }: { userId: string }) {
   return (
     <div className="grid items-start gap-4 xl:grid-cols-[minmax(0,1fr)_380px]">
       <form className="grid gap-4" onSubmit={(event) => event.preventDefault()}>
-        <Card className="overflow-hidden border-blue-200 shadow-sm dark:border-slate-700">
+        <Card className="overflow-hidden border-blue-200 bg-white shadow-sm dark:border-slate-700 dark:bg-slate-900">
           <CardHeader className="border-b border-blue-200 bg-sky-50/80 px-5 py-4 dark:border-slate-700 dark:bg-slate-950/70">
             <CardTitle>Tính phí & lợi nhuận TikTok Shop 2026</CardTitle>
           </CardHeader>
@@ -187,7 +187,7 @@ export function CalculatorForm({ userId }: { userId: string }) {
               <Input label="SKU / mã hàng" placeholder="VD: TTS-001" {...form.register("sku")} />
             </section>
 
-            <section className="grid gap-4 rounded-2xl border border-blue-200 bg-sky-50/45 p-4 dark:border-slate-700 dark:bg-slate-900/70">
+            <section className="grid gap-4 rounded-2xl border border-blue-200 bg-sky-50/45 p-4 dark:border-slate-700 dark:bg-slate-950/45">
               <SectionTitle
                 title="1. Phí hoa hồng (%)"
                 description="Tự nhập hoặc chọn shop và chọn ngành hàng"
@@ -220,7 +220,7 @@ export function CalculatorForm({ userId }: { userId: string }) {
                 </div>
               </div>
 
-              <div className="grid gap-3 rounded-2xl border border-blue-200 bg-white p-4 shadow-sm dark:border-slate-700 dark:bg-slate-950/45">
+              <div className="grid gap-3 rounded-2xl border border-blue-200 bg-white p-4 shadow-sm dark:border-slate-700 dark:bg-slate-950/70">
                 <PercentField
                   label="Phí hoa hồng đang áp dụng"
                   placeholder="Tự nhập hoặc chọn shop và chọn ngành hàng."
@@ -350,7 +350,7 @@ export function CalculatorForm({ userId }: { userId: string }) {
               ) : null}
             </section>
 
-            <section className="grid gap-3 rounded-2xl border border-blue-200 bg-sky-50/45 p-4 dark:border-slate-700 dark:bg-slate-900/70">
+            <section className="grid gap-3 rounded-2xl border border-blue-200 bg-sky-50/45 p-4 dark:border-slate-700 dark:bg-slate-950/45">
               <SectionTitle title="Chi phí đầu vào" description="(tự điền theo mô hình kinh doanh của bạn)" inline />
               <div className="grid gap-4 md:grid-cols-2">
                 <MoneyField label="9. Voucher shop" placeholder="0" value={values.voucherShop} onChange={(value) => form.setValue("voucherShop", value, { shouldValidate: true })} />
@@ -362,7 +362,7 @@ export function CalculatorForm({ userId }: { userId: string }) {
               </div>
             </section>
 
-            <section className="grid gap-3 rounded-2xl border border-blue-200 bg-sky-50/45 p-4 dark:border-slate-700 dark:bg-slate-900/70">
+            <section className="grid gap-3 rounded-2xl border border-blue-200 bg-sky-50/45 p-4 dark:border-slate-700 dark:bg-slate-950/45">
               <SectionTitle title="8. Phí Ads (%)" description="Chọn một mức nhanh." />
               <div className="grid grid-cols-3 gap-2 sm:grid-cols-6">
                 {ADS_OPTIONS.map((option) => (
@@ -388,7 +388,7 @@ export function CalculatorForm({ userId }: { userId: string }) {
           </CardContent>
         </Card>
 
-        <Card className="border-blue-200 shadow-sm dark:border-slate-700">
+        <Card className="border-blue-200 bg-white shadow-sm dark:border-slate-700 dark:bg-slate-900">
           <CardContent className="grid gap-4 pt-5">
             <div className="grid gap-3 sm:grid-cols-2">
               <Button type="button" onClick={handleSave} loading={saving} disabled={result.isInvalid}>

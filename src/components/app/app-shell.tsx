@@ -24,7 +24,7 @@ export function AppShell({ children }: { children: React.ReactNode }) {
 
   if (isEmbedded === null || isEmbedded) {
     return (
-      <div className="bg-[#eef8ff]">
+      <div className="bg-[#eef8ff] text-foreground dark:bg-slate-950">
         <main className="mx-auto max-w-7xl px-4 py-4 pb-10 md:px-6">{children}</main>
       </div>
     );
