@@ -200,7 +200,7 @@ export function CalculatorForm({ userId }: { userId: string }) {
                       key={option.value}
                       type="button"
                       className={cn(
-                        "rounded-2xl border bg-card p-4 text-left transition hover:-translate-y-0.5 hover:border-blue-500 dark:bg-slate-950/45 dark:hover:bg-slate-900",
+                        "rounded-2xl border bg-card p-4 text-center transition hover:-translate-y-0.5 hover:border-blue-500 dark:bg-slate-950/45 dark:hover:bg-slate-900",
                         values.shopType === option.value && "border-blue-600 bg-blue-600 text-white shadow-lg shadow-blue-200 dark:bg-blue-700 dark:text-white",
                       )}
                       onClick={() => {
@@ -211,7 +211,7 @@ export function CalculatorForm({ userId }: { userId: string }) {
                         }
                       }}
                     >
-                      <span className="flex items-center gap-2 font-black">
+                      <span className="flex items-center justify-center gap-2 font-black">
                         {values.shopType === option.value ? <Check className="h-4 w-4" /> : null}
                         {option.label}
                       </span>
