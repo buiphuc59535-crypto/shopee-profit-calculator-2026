@@ -1,7 +1,7 @@
 "use client";
 
 import { zodResolver } from "@hookform/resolvers/zod";
-import { Check, RotateCcw, Save, Search } from "lucide-react";
+import { Check, MessageCircle, RotateCcw, Save, Search, Send, Users } from "lucide-react";
 import { useEffect, useMemo, useState } from "react";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
@@ -390,15 +390,65 @@ export function CalculatorForm({ userId }: { userId: string }) {
         </Card>
 
         <Card>
-          <CardContent className="grid gap-3 pt-5 sm:grid-cols-2">
-            <Button type="button" onClick={handleSave} loading={saving} disabled={result.isInvalid}>
-              <Save className="h-4 w-4" />
-              Lưu
-            </Button>
-            <Button type="button" variant="secondary" onClick={() => form.reset(defaults)}>
-              <RotateCcw className="h-4 w-4" />
-              Đặt lại
-            </Button>
+          <CardContent className="grid gap-4 pt-5">
+            <div className="grid gap-3 sm:grid-cols-2">
+              <Button type="button" onClick={handleSave} loading={saving} disabled={result.isInvalid}>
+                <Save className="h-4 w-4" />
+                Lưu
+              </Button>
+              <Button type="button" variant="secondary" onClick={() => form.reset(defaults)}>
+                <RotateCcw className="h-4 w-4" />
+                Đặt lại
+              </Button>
+            </div>
+
+            <div className="border-t pt-4">
+              <div className="mx-auto grid max-w-3xl gap-3">
+                <Button
+                  asChild
+                  type="button"
+                  className="mx-auto h-12 w-full max-w-md rounded-2xl bg-gradient-to-r from-orange-500 to-red-500 text-base font-black shadow-xl shadow-red-200 hover:from-orange-600 hover:to-red-600"
+                >
+                  <a href="https://mexo.vn/lien-he/" target="_blank" rel="noopener noreferrer">
+                    <MessageCircle className="h-5 w-5" />
+                    Đăng ký tư vấn miễn phí
+                  </a>
+                </Button>
+
+                <div className="grid gap-3 md:grid-cols-3">
+                  <Button
+                    asChild
+                    type="button"
+                    className="h-14 rounded-2xl bg-blue-600 text-base font-black shadow-lg shadow-blue-200 hover:bg-blue-700"
+                  >
+                    <a href="https://www.facebook.com/buiphuc59535" target="_blank" rel="noopener noreferrer">
+                      <Users className="h-4 w-4" />
+                      Tham Gia Group TikTok Người Bán
+                    </a>
+                  </Button>
+                  <Button
+                    asChild
+                    type="button"
+                    className="h-14 rounded-2xl bg-cyan-600 text-base font-black shadow-lg shadow-cyan-200 hover:bg-cyan-700"
+                  >
+                    <a href="https://www.facebook.com/buiphuc59535" target="_blank" rel="noopener noreferrer">
+                      <Users className="h-4 w-4" />
+                      Tham Gia Group TikTok Người Bán
+                    </a>
+                  </Button>
+                  <Button
+                    asChild
+                    type="button"
+                    className="h-14 rounded-2xl bg-emerald-600 text-base font-black shadow-lg shadow-emerald-200 hover:bg-emerald-700"
+                  >
+                    <a href="https://zalo.me/0846484333" target="_blank" rel="noopener noreferrer">
+                      <Send className="h-4 w-4" />
+                      Group Zalo Chia Sẻ Hỗ Trợ Bán Hàng TMĐT
+                    </a>
+                  </Button>
+                </div>
+              </div>
+            </div>
           </CardContent>
         </Card>
       </form>
