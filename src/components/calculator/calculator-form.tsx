@@ -48,10 +48,10 @@ const defaults: FormValues = {
   autoRound: true,
 };
 
-const shopTypeOptions: { value: ShopType; label: string; hint: string }[] = [
-  { value: "manual", label: "Tự nhập %", hint: "Chỉnh trực tiếp phí hoa hồng" },
-  { value: "regular", label: "Shop thường", hint: "Đọc từ PDF phí TikTok" },
-  { value: "mall", label: "Shop Mall", hint: "Đọc từ PDF phí TikTok Mall" },
+const shopTypeOptions: { value: ShopType; label: string }[] = [
+  { value: "manual", label: "Tự nhập %" },
+  { value: "regular", label: "Shop thường" },
+  { value: "mall", label: "Shop Mall" },
 ];
 
 function parseMoneyInput(value: string) {
@@ -215,7 +215,6 @@ export function CalculatorForm({ userId }: { userId: string }) {
                         {values.shopType === option.value ? <Check className="h-4 w-4" /> : null}
                         {option.label}
                       </span>
-                      <span className="mt-1 block text-xs font-semibold text-muted-foreground">{option.hint}</span>
                     </button>
                   ))}
                 </div>
