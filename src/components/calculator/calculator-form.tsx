@@ -268,8 +268,8 @@ export function CalculatorForm({ userId }: { userId: string }) {
                               className={cn(
                                 "rounded-2xl border px-3 py-2 text-center",
                                 values.shopType === "regular"
-                                  ? "border-blue-300 bg-blue-50 text-blue-700 dark:border-blue-900 dark:bg-blue-950/30 dark:text-blue-200"
-                                  : "bg-muted text-muted-foreground",
+                                  ? "border-blue-500 bg-blue-50 text-blue-700 shadow-md shadow-blue-200/70 dark:border-sky-400 dark:bg-blue-600 dark:text-white dark:shadow-sky-500/25"
+                                  : "bg-muted text-muted-foreground dark:border-slate-700 dark:bg-slate-800 dark:text-slate-300",
                               )}
                             >
                               <span className="block text-[11px] font-black uppercase">Shop thường</span>
@@ -281,8 +281,8 @@ export function CalculatorForm({ userId }: { userId: string }) {
                               className={cn(
                                 "rounded-2xl border px-3 py-2 text-center",
                                 values.shopType === "mall"
-                                  ? "border-blue-300 bg-blue-50 text-blue-700 dark:border-blue-900 dark:bg-blue-950/30 dark:text-blue-200"
-                                  : "bg-muted text-muted-foreground",
+                                  ? "border-blue-500 bg-blue-50 text-blue-700 shadow-md shadow-blue-200/70 dark:border-sky-400 dark:bg-blue-600 dark:text-white dark:shadow-sky-500/25"
+                                  : "bg-muted text-muted-foreground dark:border-slate-700 dark:bg-slate-800 dark:text-slate-300",
                               )}
                             >
                               <span className="block text-[11px] font-black uppercase">Shop Mall</span>
@@ -311,7 +311,7 @@ export function CalculatorForm({ userId }: { userId: string }) {
                               className={cn(
                                 "rounded-xl border px-3 py-2",
                                 values.shopType === "regular"
-                                  ? "border-blue-300 bg-white text-blue-700 dark:border-blue-800 dark:bg-blue-950/45 dark:text-blue-100"
+                                  ? "border-blue-500 bg-white text-blue-700 shadow-md shadow-blue-200/70 dark:border-sky-400 dark:bg-blue-600 dark:text-white dark:shadow-sky-500/25"
                                   : "bg-white/60 text-muted-foreground dark:border-slate-700 dark:bg-slate-950/65",
                               )}
                             >
@@ -324,7 +324,7 @@ export function CalculatorForm({ userId }: { userId: string }) {
                               className={cn(
                                 "rounded-xl border px-3 py-2",
                                 values.shopType === "mall"
-                                  ? "border-blue-300 bg-white text-blue-700 dark:border-blue-800 dark:bg-blue-950/45 dark:text-blue-100"
+                                  ? "border-blue-500 bg-white text-blue-700 shadow-md shadow-blue-200/70 dark:border-sky-400 dark:bg-blue-600 dark:text-white dark:shadow-sky-500/25"
                                   : "bg-white/60 text-muted-foreground dark:border-slate-700 dark:bg-slate-950/65",
                               )}
                             >
