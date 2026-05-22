@@ -108,7 +108,7 @@ function ThemeBridge() {
 
 const THEME_LOCK_MS = 520;
 const THEME_CHANGING_WINDOW_MS = 600;
-const THEME_APPLY_DELAY_MS = 70;
+const THEME_APPLY_DELAY_MS = 150;
 
 function lockThemePaint() {
   const root = document.documentElement;
