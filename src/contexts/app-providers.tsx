@@ -1,12 +1,12 @@
 "use client";
 
 import { ThemeProvider, useTheme } from "next-themes";
-import { useEffect } from "react";
+import { useEffect, useLayoutEffect, useRef } from "react";
 import { AuthProvider } from "@/contexts/auth-context";
 
 export function AppProviders({ children }: { children: React.ReactNode }) {
   return (
-    <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
+    <ThemeProvider attribute="class" defaultTheme="system" enableSystem disableTransitionOnChange storageKey="mexo-theme">
       <ThemeBridge />
       <EmbedHeightBridge />
       <AuthProvider>{children}</AuthProvider>
@@ -16,27 +16,51 @@ export function AppProviders({ children }: { children: React.ReactNode }) {
 
 function ThemeBridge() {
   const { setTheme } = useTheme();
+  const lastAppliedTheme = useRef<string | null>(null);
+  const initialUrlThemeApplied = useRef(false);
 
-  useEffect(() => {
+  useLayoutEffect(() => {
+    const isEmbed = (() => {
+      try {
+        return new URLSearchParams(window.location.search).get("mexo_embed") === "1";
+      } catch {
+        return false;
+      }
+    })();
+
     const applyTheme = (theme: string | null | undefined) => {
       if (theme === "light" || theme === "dark") {
-        setTheme(theme);
+        const root = document.documentElement;
+        if (lastAppliedTheme.current === theme && root.classList.contains(theme)) return;
+        lastAppliedTheme.current = theme;
+        lockThemePaint();
+        root.classList.remove(theme === "dark" ? "light" : "dark");
+        root.classList.add(theme);
+        root.style.colorScheme = theme;
+        if (!isEmbed) {
+          try {
+            localStorage.setItem("mexo-theme", theme);
+            localStorage.setItem("theme", theme);
+          } catch {}
+          setTheme(theme);
+        }
       }
     };
 
-    try {
-      const params = new URLSearchParams(window.location.search);
-      if (params.get("mexo_embed") === "1") {
-        applyTheme(params.get("theme") || localStorage.getItem("mexo-theme") || localStorage.getItem("theme"));
-      }
-    } catch {}
+    if (!initialUrlThemeApplied.current) {
+      initialUrlThemeApplied.current = true;
+      try {
+        const params = new URLSearchParams(window.location.search);
+        if (params.get("mexo_embed") === "1") {
+          applyTheme(params.get("theme") || localStorage.getItem("mexo-theme") || localStorage.getItem("theme"));
+        }
+      } catch {}
+    }
 
     const onMessage = (event: MessageEvent) => {
-      const parentOrigin = getParentOrigin();
-      if (event.origin !== window.location.origin && event.origin !== parentOrigin) return;
-      if (event.data?.type === "mexo-theme") {
-        applyTheme(event.data.theme);
-      }
+      if (event.data?.type !== "mexo-theme") return;
+      if (!isTrustedThemeOrigin(event.origin)) return;
+      applyTheme(event.data.theme);
     };
 
     const onStorage = (event: StorageEvent) => {
@@ -56,6 +80,17 @@ function ThemeBridge() {
   return null;
 }
 
+function lockThemePaint() {
+  const root = document.documentElement;
+  root.classList.add("mexo-theme-lock");
+  window.clearTimeout(Number(root.dataset.mexoThemeLockTimer || 0));
+  const timer = window.setTimeout(() => {
+    root.classList.remove("mexo-theme-lock");
+    delete root.dataset.mexoThemeLockTimer;
+  }, 260);
+  root.dataset.mexoThemeLockTimer = String(timer);
+}
+
 function EmbedHeightBridge() {
   useEffect(() => {
     const params = new URLSearchParams(window.location.search);
@@ -63,11 +98,10 @@ function EmbedHeightBridge() {
     const targetOrigin = getParentOrigin();
 
     const postHeight = () => {
-      const contentBottom = Array.from(document.body.children).reduce((bottom, element) => {
-        const rect = element.getBoundingClientRect();
-        return Math.max(bottom, rect.bottom + window.scrollY);
-      }, 0);
-      const height = Math.ceil(Math.max(contentBottom, 800) + 24);
+      const main = document.querySelector("[data-mexo-embed-main]") || document.querySelector("main");
+      const rect = main?.getBoundingClientRect();
+      const contentBottom = rect ? rect.bottom + window.scrollY : document.body.getBoundingClientRect().bottom + window.scrollY;
+      const height = Math.ceil(Math.max(contentBottom, 640) + 8);
 
       window.parent?.postMessage(
         {
@@ -82,6 +116,7 @@ function EmbedHeightBridge() {
     document.body.style.height = "auto";
     document.documentElement.style.minHeight = "0";
     document.body.style.minHeight = "0";
+    document.body.style.margin = "0";
     document.documentElement.style.overflowX = "hidden";
     document.body.style.overflowX = "hidden";
 
@@ -90,7 +125,7 @@ function EmbedHeightBridge() {
 
     postHeight();
     requestAnimationFrame(postHeight);
-    const timers = [250, 800, 1600, 2600, 4200].map((delay) => window.setTimeout(postHeight, delay));
+    const timers = [120, 250, 800, 1600, 2600, 4200, 7000].map((delay) => window.setTimeout(postHeight, delay));
     window.addEventListener("resize", postHeight);
     window.addEventListener("load", postHeight);
     window.addEventListener("input", postHeight, true);
@@ -109,6 +144,7 @@ function EmbedHeightBridge() {
       document.body.style.height = "";
       document.documentElement.style.minHeight = "";
       document.body.style.minHeight = "";
+      document.body.style.margin = "";
     };
   }, []);
 
@@ -121,4 +157,14 @@ function getParentOrigin() {
   } catch {
     return "*";
   }
+}
+
+function isTrustedThemeOrigin(origin: string) {
+  const parentOrigin = getParentOrigin();
+  return (
+    origin === window.location.origin ||
+    (parentOrigin !== "*" && origin === parentOrigin) ||
+    origin === "https://mexo.vn" ||
+    origin === "https://www.mexo.vn"
+  );
 }
