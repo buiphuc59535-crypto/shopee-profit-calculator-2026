@@ -18,7 +18,7 @@ function ThemeBridge() {
   const { setTheme } = useTheme();
   const lastAppliedTheme = useRef<string | null>(null);
   const initialUrlThemeApplied = useRef(false);
-  const pendingThemeFrame = useRef<number | null>(null);
+  const pendingThemeTimer = useRef<number | null>(null);
   const pendingTheme = useRef<string | null>(null);
 
   useLayoutEffect(() => {
@@ -48,16 +48,25 @@ function ThemeBridge() {
       }
     };
 
-    const applyTheme = (theme: string | null | undefined) => {
+    const applyTheme = (theme: string | null | undefined, immediate = false) => {
       if (theme !== "light" && theme !== "dark") return;
       pendingTheme.current = theme;
-      if (pendingThemeFrame.current !== null) return;
-      pendingThemeFrame.current = window.requestAnimationFrame(() => {
-        pendingThemeFrame.current = null;
+      if (immediate) {
+        if (pendingThemeTimer.current !== null) {
+          window.clearTimeout(pendingThemeTimer.current);
+          pendingThemeTimer.current = null;
+        }
+        pendingTheme.current = null;
+        applyThemeNow(theme);
+        return;
+      }
+      if (pendingThemeTimer.current !== null) return;
+      pendingThemeTimer.current = window.setTimeout(() => {
+        pendingThemeTimer.current = null;
         const next = pendingTheme.current;
         pendingTheme.current = null;
         if (next === "light" || next === "dark") applyThemeNow(next);
-      });
+      }, THEME_APPLY_DELAY_MS);
     };
 
     if (!initialUrlThemeApplied.current) {
@@ -65,7 +74,7 @@ function ThemeBridge() {
       try {
         const params = new URLSearchParams(window.location.search);
         if (params.get("mexo_embed") === "1") {
-          applyTheme(params.get("theme") || localStorage.getItem("mexo-theme") || localStorage.getItem("theme"));
+          applyTheme(params.get("theme") || localStorage.getItem("mexo-theme") || localStorage.getItem("theme"), true);
         }
       } catch {}
     }
@@ -87,6 +96,10 @@ function ThemeBridge() {
     return () => {
       window.removeEventListener("message", onMessage);
       window.removeEventListener("storage", onStorage);
+      if (pendingThemeTimer.current !== null) {
+        window.clearTimeout(pendingThemeTimer.current);
+        pendingThemeTimer.current = null;
+      }
     };
   }, [setTheme]);
 
@@ -95,6 +108,7 @@ function ThemeBridge() {
 
 const THEME_LOCK_MS = 520;
 const THEME_CHANGING_WINDOW_MS = 600;
+const THEME_APPLY_DELAY_MS = 70;
 
 function lockThemePaint() {
   const root = document.documentElement;
