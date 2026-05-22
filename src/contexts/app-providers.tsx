@@ -18,6 +18,8 @@ function ThemeBridge() {
   const { setTheme } = useTheme();
   const lastAppliedTheme = useRef<string | null>(null);
   const initialUrlThemeApplied = useRef(false);
+  const pendingThemeFrame = useRef<number | null>(null);
+  const pendingTheme = useRef<string | null>(null);
 
   useLayoutEffect(() => {
     const isEmbed = (() => {
@@ -28,23 +30,34 @@ function ThemeBridge() {
       }
     })();
 
-    const applyTheme = (theme: string | null | undefined) => {
-      if (theme === "light" || theme === "dark") {
-        const root = document.documentElement;
-        if (lastAppliedTheme.current === theme && root.classList.contains(theme)) return;
-        lastAppliedTheme.current = theme;
-        lockThemePaint();
-        root.classList.remove(theme === "dark" ? "light" : "dark");
-        root.classList.add(theme);
-        root.style.colorScheme = theme;
-        if (!isEmbed) {
-          try {
-            localStorage.setItem("mexo-theme", theme);
-            localStorage.setItem("theme", theme);
-          } catch {}
-          setTheme(theme);
-        }
+    const applyThemeNow = (theme: "light" | "dark") => {
+      const root = document.documentElement;
+      if (lastAppliedTheme.current === theme && root.classList.contains(theme)) return;
+      lastAppliedTheme.current = theme;
+      lockThemePaint();
+      markThemeChanging();
+      root.classList.remove(theme === "dark" ? "light" : "dark");
+      root.classList.add(theme);
+      root.style.colorScheme = theme;
+      if (!isEmbed) {
+        try {
+          localStorage.setItem("mexo-theme", theme);
+          localStorage.setItem("theme", theme);
+        } catch {}
+        setTheme(theme);
       }
+    };
+
+    const applyTheme = (theme: string | null | undefined) => {
+      if (theme !== "light" && theme !== "dark") return;
+      pendingTheme.current = theme;
+      if (pendingThemeFrame.current !== null) return;
+      pendingThemeFrame.current = window.requestAnimationFrame(() => {
+        pendingThemeFrame.current = null;
+        const next = pendingTheme.current;
+        pendingTheme.current = null;
+        if (next === "light" || next === "dark") applyThemeNow(next);
+      });
     };
 
     if (!initialUrlThemeApplied.current) {
@@ -80,6 +93,9 @@ function ThemeBridge() {
   return null;
 }
 
+const THEME_LOCK_MS = 520;
+const THEME_CHANGING_WINDOW_MS = 600;
+
 function lockThemePaint() {
   const root = document.documentElement;
   root.classList.add("mexo-theme-lock");
@@ -87,8 +103,17 @@ function lockThemePaint() {
   const timer = window.setTimeout(() => {
     root.classList.remove("mexo-theme-lock");
     delete root.dataset.mexoThemeLockTimer;
-  }, 260);
+  }, THEME_LOCK_MS);
   root.dataset.mexoThemeLockTimer = String(timer);
+}
+
+function markThemeChanging() {
+  (window as unknown as { __mexoThemeChangingAt?: number }).__mexoThemeChangingAt = Date.now();
+}
+
+function isThemeChanging() {
+  const at = (window as unknown as { __mexoThemeChangingAt?: number }).__mexoThemeChangingAt;
+  return typeof at === "number" && Date.now() - at < THEME_CHANGING_WINDOW_MS;
 }
 
 function EmbedHeightBridge() {
@@ -98,6 +123,7 @@ function EmbedHeightBridge() {
     const targetOrigin = getParentOrigin();
 
     const postHeight = () => {
+      if (isThemeChanging()) return;
       const main = document.querySelector("[data-mexo-embed-main]") || document.querySelector("main");
       const rect = main?.getBoundingClientRect();
       const contentBottom = rect ? rect.bottom + window.scrollY : document.body.getBoundingClientRect().bottom + window.scrollY;
@@ -129,7 +155,6 @@ function EmbedHeightBridge() {
     window.addEventListener("resize", postHeight);
     window.addEventListener("load", postHeight);
     window.addEventListener("input", postHeight, true);
-    window.addEventListener("click", postHeight, true);
 
     return () => {
       resizeObserver.disconnect();
@@ -137,7 +162,6 @@ function EmbedHeightBridge() {
       window.removeEventListener("resize", postHeight);
       window.removeEventListener("load", postHeight);
       window.removeEventListener("input", postHeight, true);
-      window.removeEventListener("click", postHeight, true);
       document.documentElement.style.overflowX = "";
       document.body.style.overflowX = "";
       document.documentElement.style.height = "";

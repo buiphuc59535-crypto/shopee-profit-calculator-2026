@@ -1,19 +1,19 @@
 ﻿@import "tailwindcss";
 
 :root {
-  --background: #f0f9ff;
-  --foreground: #1f2937;
+  --background: #f7f7f8;
+  --foreground: #111111;
   --card: #ffffff;
-  --card-foreground: #1f2937;
-  --muted: #e0f2fe;
-  --muted-foreground: #667085;
-  --primary: #155eef;
+  --card-foreground: #111111;
+  --muted: #f1f1f3;
+  --muted-foreground: #6b7280;
+  --primary: #dc2626;
   --primary-foreground: #ffffff;
-  --secondary: #2563eb;
+  --secondary: #111111;
   --secondary-foreground: #ffffff;
-  --border: #bfdbfe;
-  --input: #bfdbfe;
-  --ring: #155eef;
+  --border: #e4e4e7;
+  --input: #e4e4e7;
+  --ring: #dc2626;
   --success: #16a34a;
   --warning: #f59e0b;
   --danger: #dc2626;
@@ -42,29 +42,89 @@
 }
 
 .dark {
-  --background: #07111d;
-  --foreground: #f7f7f8;
-  --card: #0f1b2d;
-  --card-foreground: #f7f7f8;
-  --muted: #13263b;
-  --muted-foreground: #a7adb9;
-  --primary: #3b82f6;
+  --background: #07111f;
+  --foreground: #f8fafc;
+  --card: #0f172a;
+  --card-foreground: #f8fafc;
+  --muted: #172033;
+  --muted-foreground: #b6c2d2;
+  --primary: #ff4d3d;
   --primary-foreground: #ffffff;
-  --secondary: #60a5fa;
-  --secondary-foreground: #082f49;
-  --border: #1e3a5f;
-  --input: #1e3a5f;
-  --ring: #3b82f6;
+  --secondary: #e2e8f0;
+  --secondary-foreground: #07111f;
+  --border: #26354f;
+  --input: #26354f;
+  --ring: #ff4d3d;
 }
 
 * {
   border-color: var(--border);
 }
 
+html.mexo-theme-lock,
+html.mexo-theme-lock *,
+html.mexo-theme-lock *::before,
+html.mexo-theme-lock *::after,
+html.mexo-theme-lock *::placeholder,
+html.mexo-theme-lock body {
+  transition: none !important;
+  animation: none !important;
+  animation-duration: 0s !important;
+  transition-duration: 0s !important;
+  transition-delay: 0s !important;
+}
+
 body {
   background: var(--background);
   color: var(--foreground);
   font-family: var(--font-be-vietnam), Arial, Helvetica, sans-serif;
+}
+
+html.dark,
+html.dark body {
+  background-color: #07111f;
+  color: #f8fafc;
+}
+
+.dark body {
+  background:
+    radial-gradient(circle at 15% 0%, rgb(37 99 235 / 14%), transparent 32rem),
+    radial-gradient(circle at 85% 12%, rgb(239 68 68 / 12%), transparent 28rem),
+    var(--background);
+}
+
+html.dark [data-mexo-embed="true"] {
+  background: #07111f;
+  color: #f8fafc;
+}
+
+html.dark [data-mexo-embed="true"] .bg-card,
+html.dark [data-mexo-embed="true"] input,
+html.dark [data-mexo-embed="true"] select {
+  background-color: #0f172a;
+  color: #f8fafc;
+}
+
+html.dark [data-mexo-embed="true"] .bg-muted {
+  background-color: #172033;
+}
+
+.mexo-app-header {
+  box-shadow: 0 18px 60px rgb(15 23 42 / 8%);
+}
+
+.dark .mexo-app-header {
+  background: rgb(7 17 29 / 92%);
+  border-color: rgb(30 58 95);
+  box-shadow: none;
+}
+
+.mexo-app-logo {
+  max-width: min(240px, 55vw);
+}
+
+.dark .mexo-app-logo {
+  filter: brightness(0) invert(1);
 }
 
 html {
