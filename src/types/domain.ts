@@ -60,3 +60,5 @@ export type FeeConfig = {
   createdAt: Timestamp | Date;
 };
 
+
+export type ShopType = "manual" | "regular" | "mall";
